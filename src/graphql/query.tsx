@@ -23,3 +23,19 @@ export const GET_POST = gql`
     }
   }
 `
+
+export const CREATE_POST = gql`
+  mutation CreatePost(
+    $title: String
+    $content: String
+    $authorId: ID
+  ) {
+    createPost(
+      title: $title
+      content: $content
+      authorId: $authorId
+    ) {
+      title
+    }
+  }
+`
