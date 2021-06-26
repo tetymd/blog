@@ -27,12 +27,8 @@ const CtmTypography = styled(Typography)({
   fontWeight: 800,
 })
 
-type Props = {
-  article: Article
-}
-
-
-export default function ArticleCard(props: Props) {
+export default function ArticleCard(props: any) {
+  console.log(props.gqlres.getPostById)
   return (
     <CtmCard>
       <CtmCardMedia
@@ -42,15 +38,15 @@ export default function ArticleCard(props: Props) {
       <CardContent>
         <Box mt={2}>
           <CtmTypography gutterBottom variant="h4">
-            {props.article.title}
+            {props.gqlres.getPostById.title}
           </CtmTypography>
         </Box>
         <Box mr={3}>
           <Typography gutterBottom variant="caption" component="p" align="right">
-            {props.article.createdAt}
+            {props.gqlres.getPostById.createdAt}
           </Typography>
         </Box>
-        <MDEditor.Markdown source={props.article.content}/>
+        <MDEditor.Markdown source={props.gqlres.getPostById.content}/>
       </CardContent>
     </CtmCard>
   )
