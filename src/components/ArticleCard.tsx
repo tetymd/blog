@@ -50,7 +50,7 @@ export default function ArticleCard(props: Props) {
             {props.article.createdAt}
           </Typography>
         </Box>
-        <MDEditor.Markdown source={props.article.body}/>
+        <MDEditor.Markdown source={props.article.content}/>
       </CardContent>
     </CtmCard>
   )

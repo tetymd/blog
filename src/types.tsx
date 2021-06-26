@@ -1,13 +1,16 @@
 type Article = {
-  article_id: string,
+  id: string,
   title: string,
-  body: string,
-  createdAt: string
+  content: string,
+  authorId: number,
+  createdAt: string,
+  updateAt: string,
+  published: boolean
 }
 
 type Articles = {
   items: Article[],
-  total_items: number
+  length: number
 }
 
 export type {

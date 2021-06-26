@@ -20,7 +20,7 @@ export default function MediaCard(props: Props) {
   return (
     <CustomCard>
       <CardActionArea>
-        <Link to={`/articles/${props.article.article_id}`}>
+        <Link to={`/articles/${props.article.id}`}>
           <CardContent>
             <Typography gutterBottom variant="h6" component="h6">
               {props.article.title}

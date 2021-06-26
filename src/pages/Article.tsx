@@ -82,10 +82,13 @@ Lists
 `
 
 const article: Article = {
-  article_id: "gaohkdaf;alekrhgja",
+  id: "gaohkdaf;alekrhgja",
   title: "Reactに入門してみた",
-  body: md,
-  createdAt: "2021/06/17"
+  content: md,
+  authorId: 1,
+  createdAt: "2021/06/17",
+  updateAt: "",
+  published: true
 }
 
 export default function ArticlePage() {

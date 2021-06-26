@@ -10,74 +10,16 @@ const GridItem = styled(Grid)({
   width: '100%'
 })
 
-function ArticleList() {
-  const articles: Articles = {
-    items: [
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Reactに入門してみた",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "docker compose up -d",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Pythonでデータ分析",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Reactに入門してみた",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "docker compose up -d",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Pythonでデータ分析",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Reactに入門してみた",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "docker compose up -d",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-      {
-        article_id: "gaohkdaf;alekrhgja",
-        title: "Pythonでデータ分析",
-        body: "",
-        createdAt: "2021/06/17"
-      },
-    ],
-    total_items: 9
-  }
-
+function ArticleList(props: any) {
+  console.log(props.gqlres.allPosts)
   let items: any[] = []
 
-  for(var i in articles.items){
+  for(var i in props.gqlres.allPosts){
+    console.log(props.gqlres.allPosts[i])
     items.push(
-      <GridItem item xs={10} sm={9} md={6} lg={6} xl={5}>
+      <GridItem item xs={10} sm={9} md={6} lg={6} xl={5} key={i}>
         <Box m={0.8}>
-          <MediaCard article={articles.items[i]} />
+          <MediaCard article={props.gqlres.allPosts[i]} />
         </Box>
       </GridItem>
     )
