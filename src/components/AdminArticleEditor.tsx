@@ -55,7 +55,7 @@ export default function AdminArticleEditor(props: any) {
     <form>
       <ToolBar mb={3}>
         <CtmTextField id="filled-basic" label="タイトル" variant="filled" defaultValue={title} onChange={e => handleChange(e)} />
-        <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit() }}>投稿</CtmButton>
+        <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit() }}>更新</CtmButton>
       </ToolBar>
       <MDEditor
         height={800}
