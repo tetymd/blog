@@ -16,20 +16,17 @@ const CustomCard = styled(Card)({
   width: '100%'
 })
 
-export default function MediaCard(props: Props) {
-  const unixtime: number = +props.article.createdAt
-  const date: Date = new Date(unixtime)
-
+export default function AdminCard(props: Props) {
   return (
     <CustomCard>
       <CardActionArea>
-        <Link to={`/articles/${props.article.id}`}>
+        <Link to={`/admin/articles/${props.article.id}`}>
           <CardContent>
             <Typography gutterBottom variant="h6" component="h6">
               {props.article.title}
             </Typography>
             <Typography gutterBottom variant="caption" component="p" color="textSecondary" align="right">
-              {date.toLocaleDateString()}
+              {props.article.createdAt}
             </Typography>
           </CardContent>
         </Link>

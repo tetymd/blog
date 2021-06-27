@@ -6,10 +6,7 @@ import {
   Button,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
-import MDEditor from '@uiw/react-md-editor';
-import { GET_ALL_POSTS } from '../graphql/query'
-import { useQuery } from '@apollo/client';
-import AdminArticleList from '../components/AdminArticleList'
+import AdminArticleEditorCreate from '../components/AdminArticleEditorCreate';
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -32,18 +29,12 @@ const ToolBar = styled(Box)({
   justifyContent: "flex-end",
 })
 
-export default function Admin() {
-  const { loading, data } = useQuery(GET_ALL_POSTS)
-
+export default function AdminCreateArticle() {
   return (
     <Box>
       <AdminHeader/>
-      <CtmBox pt={10} pb={3}>
-        { loading ? (
-          <p>Loading...</p>
-        ): (
-          <AdminArticleList gqlres={data} />
-        )}
+      <CtmBox pt={12} pb={12} pl={12} pr={12}>
+        <AdminArticleEditorCreate />
       </CtmBox>
     </Box>
   )

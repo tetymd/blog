@@ -3,13 +3,13 @@ import {
   Grid,
   Box,
 } from '@material-ui/core'
-import MediaCard from './Card'
+import AdminCard from './AdminCard'
 
 const GridItem = styled(Grid)({
   width: '100%'
 })
 
-function ArticleList(props: any) {
+function AdminArticleList(props: any) {
   console.log(props.gqlres.allPosts)
   let items: any[] = []
 
@@ -18,7 +18,7 @@ function ArticleList(props: any) {
     items.push(
       <GridItem item xs={10} sm={9} md={6} lg={6} xl={5} key={i}>
         <Box m={0.8}>
-          <MediaCard article={props.gqlres.allPosts[i]} />
+          <AdminCard article={props.gqlres.allPosts[i]} />
         </Box>
       </GridItem>
     )
@@ -31,4 +31,4 @@ function ArticleList(props: any) {
   )
 }
 
-export default ArticleList
+export default AdminArticleList

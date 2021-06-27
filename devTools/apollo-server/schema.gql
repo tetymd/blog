@@ -20,6 +20,7 @@ type Query {
   allUsers: [User!]!
   allPosts: [Post!]
   getUserById(id: ID): User!
+  getPostById(id: ID): Post!
 }
 type Mutation {
   createPost(

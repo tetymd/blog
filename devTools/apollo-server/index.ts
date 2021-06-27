@@ -21,6 +21,12 @@ async function main() {
         return prisma.user.findUnique({
           where: { id }
         })
+      },
+      getPostById: (_: any, args: { id: number }) => {
+        const id = +args.id
+        return prisma.post.findUnique({
+          where: { id }
+        })
       }
     },
     Mutation: {

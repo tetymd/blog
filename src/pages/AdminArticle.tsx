@@ -6,10 +6,10 @@ import {
   Button,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
-import MDEditor from '@uiw/react-md-editor';
-import { GET_ALL_POSTS } from '../graphql/query'
+import AdminArticleEditor from '../components/AdminArticleEditor';
+import { GET_POST } from '../graphql/query'
 import { useQuery } from '@apollo/client';
-import AdminArticleList from '../components/AdminArticleList'
+import { useParams } from 'react-router-dom'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -32,19 +32,28 @@ const ToolBar = styled(Box)({
   justifyContent: "flex-end",
 })
 
-export default function Admin() {
-  const { loading, data } = useQuery(GET_ALL_POSTS)
+export default function AdminArticlePage() {
+  // ジェネリクスを使えばハンドラを作らなくてもいい？
+  const params: any = useParams()
+  console.log(params.id)
+  const { loading, data } = useQuery(GET_POST, {
+    variables: { id: params.id }
+  })
 
   return (
     <Box>
       <AdminHeader/>
-      <CtmBox pt={10} pb={3}>
+      <CtmBox pt={12} pb={12} pl={12} pr={12}>
         { loading ? (
           <p>Loading...</p>
         ): (
-          <AdminArticleList gqlres={data} />
+          <AdminArticleEditor gqlres={data} />
         )}
       </CtmBox>
     </Box>
   )
 }
+
+
+
+
