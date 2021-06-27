@@ -35,7 +35,9 @@ export const CREATE_POST = gql`
       content: $content
       authorId: $authorId
     ) {
+      id
       title
+      createdAt
     }
   }
 `
