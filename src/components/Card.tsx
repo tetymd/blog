@@ -17,6 +17,9 @@ const CustomCard = styled(Card)({
 })
 
 export default function MediaCard(props: Props) {
+  const unixtime: number = +props.article.createdAt
+  const date: Date = new Date(unixtime)
+
   return (
     <CustomCard>
       <CardActionArea>
@@ -26,7 +29,7 @@ export default function MediaCard(props: Props) {
               {props.article.title}
             </Typography>
             <Typography gutterBottom variant="caption" component="p" color="textSecondary" align="right">
-              {props.article.createdAt}
+              {date.toLocaleDateString()}
             </Typography>
           </CardContent>
         </Link>

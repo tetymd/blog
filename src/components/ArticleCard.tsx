@@ -29,6 +29,9 @@ const CtmTypography = styled(Typography)({
 
 export default function ArticleCard(props: any) {
   console.log(props.gqlres.getPostById)
+  const unixtime: number = +props.gqlres.getPostById.createdAt
+  const date: Date = new Date(unixtime)
+
   return (
     <CtmCard>
       <CtmCardMedia
@@ -43,7 +46,7 @@ export default function ArticleCard(props: any) {
         </Box>
         <Box mr={3}>
           <Typography gutterBottom variant="caption" component="p" align="right">
-            {props.gqlres.getPostById.createdAt}
+            {date.toLocaleDateString()}
           </Typography>
         </Box>
         <MDEditor.Markdown source={props.gqlres.getPostById.content}/>
