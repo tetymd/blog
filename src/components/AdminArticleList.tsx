@@ -4,13 +4,12 @@ import {
   Box,
 } from '@material-ui/core'
 import AdminCard from './AdminCard'
-import { Articles } from '../types'
 
 const GridItem = styled(Grid)({
   width: '100%'
 })
 
-function ArticleList(props: any) {
+function AdminArticleList(props: any) {
   console.log(props.gqlres.allPosts)
   let items: any[] = []
 
@@ -32,4 +31,4 @@ function ArticleList(props: any) {
   )
 }
 
-export default ArticleList
+export default AdminArticleList

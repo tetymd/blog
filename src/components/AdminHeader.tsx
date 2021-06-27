@@ -23,6 +23,11 @@ export default function AdminHeader() {
             TECHI BLOG Admin
           </Link>
         </CtmTypography>
+        <Link to="/admin/newarticle">
+            <Typography variant="subtitle1">
+              新規作成
+            </Typography>
+          </Link>
       </Toolbar>
     </CtmAppBar>
   )
