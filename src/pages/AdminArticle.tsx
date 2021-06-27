@@ -4,12 +4,14 @@ import {
   Box,
   TextField,
   Button,
+  Grid,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
 import AdminArticleEditor from '../components/AdminArticleEditor';
+import DeletePostButton from '../components/DeletePostButton';
 import { GET_POST } from '../graphql/query'
 import { useQuery } from '@apollo/client';
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -19,12 +21,8 @@ const CtmTextField = styled(TextField)({
   width: "92%",
 })
 
-const CtmButton = styled(Button)({
-  width: "8%",
-  marginLeft: 18,
-  marginTop: 8,
-  marginBottom: 8,
-  marginRight: 18,
+const ButtonBox = styled(Button)({
+  width: "100%"
 })
 
 const ToolBar = styled(Box)({
@@ -44,11 +42,20 @@ export default function AdminArticlePage() {
     <Box>
       <AdminHeader/>
       <CtmBox pt={12} pb={12} pl={12} pr={12}>
-        { loading ? (
-          <p>Loading...</p>
-        ): (
-          <AdminArticleEditor gqlres={data} />
-        )}
+        <Grid container direction="column" spacing={2}>
+          <Grid item lg={12}>
+            { loading ? (
+              <p>Loading...</p>
+            ): (
+              <AdminArticleEditor gqlres={data} />
+            )}
+          </Grid>
+          <Grid container item justify="flex-end">
+            <Link to="/admin">
+              <DeletePostButton />
+            </Link>
+          </Grid>
+        </Grid>
       </CtmBox>
     </Box>
   )

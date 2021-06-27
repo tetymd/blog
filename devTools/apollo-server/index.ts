@@ -63,6 +63,16 @@ async function main() {
       }) => {
         const id = +args.postId
         prisma.post.delete({ where: { id: id } })
+          .then(
+            data => {
+              console.log(data)
+            }
+          )
+          .catch(
+            err => {
+              console.log(err)
+            }
+          )
         return `Delete post ID: ${args.postId}`
       }
     }
