@@ -7,7 +7,7 @@ export class CdkStack extends cdk.Stack {
 
     // The code that defines your stack goes here
     const userPool = new cognito.UserPool(this, 'UserPool', {
-      userPoolName: 'blog-user-pool',
+      userPoolName: 'blog',
     })
 
     const readOnlyScope = new cognito.ResourceServerScope({
@@ -35,7 +35,7 @@ export class CdkStack extends cdk.Stack {
     })
 
     const identityPool = new cognito.CfnIdentityPool(this, "Identity-pool", {
-      identityPoolName: "blog-identity-pool",
+      identityPoolName: "blog",
       allowUnauthenticatedIdentities: true,
       cognitoIdentityProviders: [{
         clientId: userPoolClient.userPoolClientId,
@@ -55,7 +55,7 @@ export class CdkStack extends cdk.Stack {
               'cognito-identity.amazonaws.com:aud': identityPool.ref,
             },
             'ForAnyValue:StringLike': {
-              'cognito-identity.amazonaws.com:amr': 'authenticated',
+              'cognito-identity.amazonaws.com:amr': 'unauthenticated',
             },
           },
           'sts:AssumeRoleWithWebIdentity',
@@ -111,5 +111,10 @@ export class CdkStack extends cdk.Stack {
         },
       },
     );
+
+    new cdk.CfnOutput(this, 'identityPoolId', {
+      value: identityPool.ref,
+      description: 'Cognito Identity Pool ID',
+    });
   }
 }

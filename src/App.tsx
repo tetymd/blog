@@ -10,6 +10,32 @@ import AdminArticlePage from './pages/AdminArticle'
 import AdminCreateArticle from './pages/AdminCreateArticle'
 import AdminAuth from './pages/AdminAuth'
 
+import Amplify, { Auth } from 'aws-amplify'
+
+Amplify.configure({
+  // (required) only for Federated Authentication - Amazon Cognito Identity Pool ID
+  identityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID,
+
+  // (required)- Amazon Cognito Region
+  region: process.env.REACT_APP_AWS_REGION,
+
+  userPoolId: process.env.REACT_APP_USER_POOL_ID,
+  userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID
+})
+
+const anonymousUser = Auth.currentCredentials()
+  .then(
+    data => {
+      console.log(data)
+    }
+  )
+  .catch(
+    err => {
+      console.log(err)
+    }
+  )
+
+
 const CustomBox = styled(Box)({
   backgroundColor: 'rgb(240,240,240)',
 })
