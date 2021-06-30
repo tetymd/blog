@@ -29,6 +29,7 @@ export class CdkStack extends cdk.Stack {
       userPool,
       authFlows: {
         userPassword: true,
+        userSrp: true,
       },
       generateSecret: false,
       userPoolClientName: 'web',
