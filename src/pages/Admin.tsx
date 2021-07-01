@@ -34,17 +34,12 @@ const ToolBar = styled(Box)({
 })
 
 export default function Admin() {
-  const anonymousUser = Auth.currentCredentials()
-  .then(
-    data => {
-      console.log(data)
-    }
-  )
-  .catch(
-    err => {
-      console.log(err)
-    }
-  )
+  const anonymousUser = async () => (
+    await Auth.currentCredentials()
+  ).sessionToken
+
+  console.log(anonymousUser)
+  
   const { loading, data } = useQuery(GET_ALL_POSTS)
 
   return (

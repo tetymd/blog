@@ -42,7 +42,7 @@ const CtmTypography = styled(Typography)({
 export default function AdminAuth() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [isSignIn, setSignIn] = useState(false)
+  const [isSignIn, setIsSignIn] = useState(false)
 
   const handleChangeUserName = (e: any) => {
     setUsername(e.target.value)
@@ -55,14 +55,20 @@ export default function AdminAuth() {
   const signIn = async (username: string, passwordS: string) => {
     const user = await Auth.signIn(username, password)
     console.log(user)
-    setSignIn(true)
+    Auth.currentSession()
+    .then(
+      data => {
+        console.log(data)
+      }
+    )
+    setIsSignIn(true)
   }
 
   return (
     <Box>
       <AdminHeader/>
       <CtmBox pt={10} pb={3}>
-        { isSignIn ? <Redirect to="/admin" />:
+        { isSignIn ? <p>hello</p>:
           <CtmCard>
             <CardContent>
               <Grid container direction="column" justify="center" alignItems="center" spacing={2} >

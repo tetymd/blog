@@ -63,7 +63,10 @@ export class CdkStack extends cdk.Stack {
         ),
         managedPolicies: [
           iam.ManagedPolicy.fromAwsManagedPolicyName(
-            'service-role/AWSLambdaBasicExecutionRole',
+            'service-role/AWSLambdaBasicExecutionRole'
+          ),
+          iam.ManagedPolicy.fromAwsManagedPolicyName(
+            'AWSAppSyncInvokeFullAccess'
           ),
         ],
       },
@@ -86,6 +89,9 @@ export class CdkStack extends cdk.Stack {
       managedPolicies: [
         iam.ManagedPolicy.fromAwsManagedPolicyName(
           'service-role/AWSLambdaBasicExecutionRole',
+        ),
+        iam.ManagedPolicy.fromAwsManagedPolicyName(
+          'AWSAppSyncInvokeFullAccess'
         ),
       ],
     });

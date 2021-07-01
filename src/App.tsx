@@ -12,17 +12,15 @@ import AdminCreateArticle from './pages/AdminCreateArticle'
 import AdminAuth from './pages/AdminAuth'
 
 import Amplify, { Auth } from 'aws-amplify'
+import { createAuthLink, AuthOptions } from 'aws-appsync-auth-link'
+import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link'
 
 import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
+  ApolloLink,
 } from '@apollo/client';
-
-const client = new ApolloClient({
-  uri: 'http://localhost:4000',
-  cache: new InMemoryCache()
-});
 
 Amplify.configure({
   // (required) only for Federated Authentication - Amazon Cognito Identity Pool ID
@@ -34,6 +32,8 @@ Amplify.configure({
   userPoolId: process.env.REACT_APP_USER_POOL_ID,
   userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID
 })
+
+
 
 
 const CustomBox = styled(Box)({
@@ -49,6 +49,24 @@ function App() {
   })()
 
   console.log(cred)
+
+  const url = 'https://ld3tl6m6rvagpp6esdl7rleyuy.appsync-api.ap-northeast-1.amazonaws.com/graphql'
+  const region = 'ap-northeast-1'
+  const auth: AuthOptions = {
+    type: 'AWS_IAM',
+    credentials: () => Auth.currentCredentials()
+  };
+
+  const link = ApolloLink.from([
+    createAuthLink({ url, region, auth }),
+    createSubscriptionHandshakeLink({ url, region, auth })
+  ]);
+
+  const client = new ApolloClient({
+    link: link,
+    // uri: 'http://localhost:4000',
+    cache: new InMemoryCache()
+  });
 
   return (
     <CustomBox>
