@@ -13,6 +13,17 @@ import AdminAuth from './pages/AdminAuth'
 
 import Amplify, { Auth } from 'aws-amplify'
 
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from '@apollo/client';
+
+const client = new ApolloClient({
+  uri: 'http://localhost:4000',
+  cache: new InMemoryCache()
+});
+
 Amplify.configure({
   // (required) only for Federated Authentication - Amazon Cognito Identity Pool ID
   identityPoolId: process.env.REACT_APP_IDENTITY_POOL_ID,
@@ -41,14 +52,16 @@ function App() {
 
   return (
     <CustomBox>
-      <Router>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/articles/:id" component={ArticlePage} />
-        <Route exact path="/admin/signin" component={AdminAuth} />
-        <Route exact path="/admin" component={Admin} />
-        <Route exact path="/admin/articles/:id" component={AdminArticlePage} />
-        <Route exact path="/admin/newarticle" component={AdminCreateArticle} />
-      </Router>
+      <ApolloProvider client={client}>
+        <Router>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/articles/:id" component={ArticlePage} />
+          <Route exact path="/admin/signin" component={AdminAuth} />
+          <Route exact path="/admin" component={Admin} />
+          <Route exact path="/admin/articles/:id" component={AdminArticlePage} />
+          <Route exact path="/admin/newarticle" component={AdminCreateArticle} />
+        </Router>
+      </ApolloProvider>
     </CustomBox>
   );
 }
