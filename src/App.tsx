@@ -41,8 +41,8 @@ const CustomBox = styled(Box)({
 })
 
 function App() {
-  const url = 'https://ld3tl6m6rvagpp6esdl7rleyuy.appsync-api.ap-northeast-1.amazonaws.com/graphql'
-  const region = 'ap-northeast-1'
+  const url = `${process.env.REACT_APP_APPSYNC_ENDPOINT}`
+  const region = `${process.env.REACT_APP_AWS_REGION}`
   const auth: AuthOptions = {
     type: 'AWS_IAM',
     credentials: () => Auth.currentCredentials()
