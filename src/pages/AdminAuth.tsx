@@ -52,6 +52,19 @@ export default function AdminAuth() {
     setPassword(e.target.value)
   }
 
+  const _ = (async () => {
+    try {
+      const session = await Auth.currentSession()
+      console.log(session)
+      setIsSignIn(true)
+      // const user = await Auth.currentAuthenticatedUser()
+      // console.log(user)
+    } catch (error) {
+      console.log(error)
+      setIsSignIn(false)
+    }
+  })()
+
   const signIn = async (username: string, passwordS: string) => {
     const user = await Auth.signIn(username, password)
     console.log(user)
@@ -68,7 +81,7 @@ export default function AdminAuth() {
     <Box>
       <AdminHeader/>
       <CtmBox pt={10} pb={3}>
-        { isSignIn ? <p>hello</p>:
+        { isSignIn ? <Redirect to="/admin"/>:
           <CtmCard>
             <CardContent>
               <Grid container direction="column" justify="center" alignItems="center" spacing={2} >

@@ -41,15 +41,6 @@ const CustomBox = styled(Box)({
 })
 
 function App() {
-  const [cred, setCred] = useState("")
-  
-  const _ = (async () => {
-    const c = await Auth.currentCredentials()
-    setCred(c.sessionToken)
-  })()
-
-  console.log(cred)
-
   const url = 'https://ld3tl6m6rvagpp6esdl7rleyuy.appsync-api.ap-northeast-1.amazonaws.com/graphql'
   const region = 'ap-northeast-1'
   const auth: AuthOptions = {
@@ -63,8 +54,8 @@ function App() {
   ]);
 
   const client = new ApolloClient({
-    link: link,
-    // uri: 'http://localhost:4000',
+    // link: link,
+    uri: 'http://localhost:4000',
     cache: new InMemoryCache()
   });
 
