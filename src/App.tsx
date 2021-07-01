@@ -1,3 +1,4 @@
+import React, { useContext, useState } from 'react'
 import {
   BrowserRouter as Router,
   Route,
@@ -23,24 +24,21 @@ Amplify.configure({
   userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID
 })
 
-const anonymousUser = Auth.currentCredentials()
-  .then(
-    data => {
-      console.log(data)
-    }
-  )
-  .catch(
-    err => {
-      console.log(err)
-    }
-  )
-
 
 const CustomBox = styled(Box)({
   backgroundColor: 'rgb(240,240,240)',
 })
 
 function App() {
+  const [cred, setCred] = useState("")
+  
+  const _ = (async () => {
+    const c = await Auth.currentCredentials()
+    setCred(c.sessionToken)
+  })()
+
+  console.log(cred)
+
   return (
     <CustomBox>
       <Router>

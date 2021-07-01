@@ -10,6 +10,7 @@ import MDEditor from '@uiw/react-md-editor';
 import { GET_ALL_POSTS } from '../graphql/query'
 import { useQuery } from '@apollo/client';
 import AdminArticleList from '../components/AdminArticleList'
+import { Auth } from 'aws-amplify'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -33,6 +34,17 @@ const ToolBar = styled(Box)({
 })
 
 export default function Admin() {
+  const anonymousUser = Auth.currentCredentials()
+  .then(
+    data => {
+      console.log(data)
+    }
+  )
+  .catch(
+    err => {
+      console.log(err)
+    }
+  )
   const { loading, data } = useQuery(GET_ALL_POSTS)
 
   return (
