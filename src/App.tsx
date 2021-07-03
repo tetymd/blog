@@ -33,9 +33,6 @@ Amplify.configure({
   userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID
 })
 
-
-
-
 const CustomBox = styled(Box)({
   backgroundColor: 'rgb(240,240,240)',
 })
@@ -54,8 +51,8 @@ function App() {
   ]);
 
   const client = new ApolloClient({
-    // link: link,
-    uri: 'http://localhost:4000',
+    link: link,
+    // uri: 'http://localhost:4000',
     cache: new InMemoryCache()
   });
 
