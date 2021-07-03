@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient } from '../cdk/node_modules/@prisma/client'
 import { ApolloServer } from 'apollo-server'
 const { readFileSync } = require('fs')
 
