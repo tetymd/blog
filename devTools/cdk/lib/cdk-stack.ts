@@ -3,6 +3,8 @@ import * as cognito from '@aws-cdk/aws-cognito'
 import * as iam from '@aws-cdk/aws-iam'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as rds from '@aws-cdk/aws-rds'
+import * as lmd from '@aws-cdk/aws-lambda'
+import * as lmdnode from '@aws-cdk/aws-lambda-nodejs'
 
 require('dotenv').config()
 
@@ -144,7 +146,6 @@ export class CdkStack extends cdk.Stack {
     //   })
     // })
 
-
     const subnetGroup = new rds.SubnetGroup(this, "subnetGroup", {
       description: `Subnetgroup for serverless postgres aurora databasa`,
       vpc: vpc,
@@ -255,6 +256,52 @@ export class CdkStack extends cdk.Stack {
       "yarn prisma db seed --preview-feature"
     )
     bastion.node.addDependency(aurora)
+
+    ////////////////////////////////
+    /// Lambda
+    ////////////////////////////////
+
+    const apiLambda = new lmdnode.NodejsFunction(this, 'apilambda', {
+      runtime: lmd.Runtime.NODEJS_12_X,
+      memorySize: 1024,
+      entry: 'lambda/api.ts',
+      environment: {
+        SECRET_ID: dbSecret.secretFullArn || '',
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1'
+      },
+      vpc: vpc,
+      vpcSubnets: vpc.selectSubnets(),
+      securityGroups: [
+        bastionSg
+      ],
+      bundling: {
+        // commandHooksでインストール前、バンドル前、後にコマンドを組み込める
+        commandHooks: {
+          beforeInstall(inputDir: string, outputDir: string): string[] {
+            return [``];
+          },
+          beforeBundling(inputDir: string, outputDir: string): string[] {
+            return [``];
+          },
+          afterBundling(inputDir: string, outputDir: string): string[] {
+            return [
+              // クエリエンジンを追加
+              `cp ${inputDir}/node_modules/.prisma/client/query-engine-rhel-openssl-1.0.x ${outputDir}`,
+              // スキーマ定義を追加
+              `cp ${inputDir}/node_modules/.prisma/client/schema.prisma ${outputDir}`,
+            ];
+          },
+        },
+      }
+    })
+
+    apiLambda.addToRolePolicy(
+      new iam.PolicyStatement({
+        effect: iam.Effect.ALLOW,
+        actions: ['secretsmanager:GetSecretValue'],
+        resources: [dbSecret.secretFullArn || ''],
+      })
+    )
 
     ////////////////////////////////
     /// Outputs

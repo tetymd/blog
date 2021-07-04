@@ -186,7 +186,16 @@
     "@aws-cdk/cx-api" "1.111.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-lambda@1.111.0":
+"@aws-cdk/aws-lambda-nodejs@^1.111.0":
+  version "1.111.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-lambda-nodejs/-/aws-lambda-nodejs-1.111.0.tgz#a69faeeff5325673a73a7313c09ba2b05cc3e498"
+  integrity sha512-CoPDRiHhiO6DyDmeW+IvEL9H04m0diNyT7Tzm8D8Ne9PlGIrka63/kh6PFZ6k8fKInjT9QmPQmYiRfbklQm4lg==
+  dependencies:
+    "@aws-cdk/aws-lambda" "1.111.0"
+    "@aws-cdk/core" "1.111.0"
+    constructs "^3.3.69"
+
+"@aws-cdk/aws-lambda@1.111.0", "@aws-cdk/aws-lambda@^1.111.0":
   version "1.111.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-lambda/-/aws-lambda-1.111.0.tgz#f8fbc93faf3003b2ade094ef84400c73532d24e1"
   integrity sha512-4qufD9uqn4FjGUJaRwURJ+G9ntV5Z2adkYkSxyzA3/05we6yYGPmiJvyeTlcV/pI9Ti/STopz45rnwXOB9SOHQ==
@@ -4493,10 +4502,10 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@~3.9.7:
-  version "3.9.10"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.9.10.tgz#70f3910ac7a51ed6bef79da7800690b19bf778b8"
-  integrity sha512-w6fIxVE/H1PkLKcCPsFqKE7Kv7QUwhU8qQY2MueZXWx5cPZdwFupLgKK3vntcK98BtNHZtAF4LA/yl2a7k8R6Q==
+typescript@~4:
+  version "4.3.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.3.5.tgz#4d1c37cc16e893973c45a06886b7113234f119f4"
+  integrity sha512-DqQgihaQ9cUrskJo9kIyW/+g0Vxsk8cDtZ52a3NGh0YNTfpUSArXSohyUGnvbPazEPLu398C0UxmKSOrPumUzA==
 
 union-value@^1.0.0:
   version "1.0.1"
