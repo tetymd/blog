@@ -134,6 +134,17 @@ export class CdkStack extends cdk.Stack {
       cidr: '10.0.0.0/16',
     });
 
+    // debug用
+    // const vpcFlowLog = new ec2.FlowLog(this, 'VpcFlowLog', {
+    //   resourceType: ec2.FlowLogResourceType.fromVpc(vpc)
+    // })
+    // vpc.privateSubnets.forEach((subnet, i) => {
+    //   const subnetFlowLog = new ec2.FlowLog(this, 'Private'+(i+1).toString()+'FlowLog', {
+    //     resourceType: ec2.FlowLogResourceType.fromSubnet(subnet)
+    //   })
+    // })
+
+
     const subnetGroup = new rds.SubnetGroup(this, "subnetGroup", {
       description: `Subnetgroup for serverless postgres aurora databasa`,
       vpc: vpc,
@@ -164,6 +175,11 @@ export class CdkStack extends cdk.Stack {
       engine: rds.DatabaseClusterEngine.AURORA_MYSQL,
       credentials: rds.Credentials.fromSecret(dbSecret),
       enableDataApi: true,
+      scaling: {
+        autoPause: cdk.Duration.minutes(5),
+        maxCapacity: rds.AuroraCapacityUnit.ACU_2,
+        minCapacity: rds.AuroraCapacityUnit.ACU_1
+      },
       vpc: vpc,
       subnetGroup: subnetGroup,
       securityGroups: [ec2.SecurityGroup.fromSecurityGroupId(this, "auroraSg", auroraSg.securityGroupId)],
@@ -216,8 +232,8 @@ export class CdkStack extends cdk.Stack {
       securityGroup: bastionSg
     });
     bastion.instance.addUserData(
-      "sudo yum -y update",
-      "sudo yum -y install git mysql jq",
+      "yum -y update",
+      "yum -y install git mysql jq",
       "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash",
       ". .nvm/nvm.sh",
       "nvm install v12.13.1",
@@ -235,6 +251,7 @@ export class CdkStack extends cdk.Stack {
       "SECRET=$(aws secretsmanager get-secret-value --secret-id "+`${dbSecret.secretName}`+" | grep SecretString | awk \'{print $2}\' | sed \'s/}\",/}\"/g\' | jq -r \'fromjson | .password\')",
       "echo DATABASE_URL=mysql://"+dbUser+":${SECRET}@"+aurora.clusterEndpoint.hostname+":3306/blog >> .env",
       "yarn prisma db push",
+      "sleep 30 && yarn prisma db push",
       "yarn prisma db seed --preview-feature"
     )
     bastion.node.addDependency(aurora)
