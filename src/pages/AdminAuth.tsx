@@ -68,12 +68,6 @@ export default function AdminAuth() {
   const signIn = async (username: string, passwordS: string) => {
     const user = await Auth.signIn(username, password)
     console.log(user)
-    Auth.currentSession()
-    .then(
-      data => {
-        console.log(data)
-      }
-    )
     setIsSignIn(true)
   }
 
