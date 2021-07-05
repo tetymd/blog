@@ -28,9 +28,8 @@ const CtmTypography = styled(Typography)({
 })
 
 export default function ArticleCard(props: any) {
-  console.log(props.gqlres.getPostById)
-  const unixtime: number = +props.gqlres.getPostById.createdAt
-  const date: Date = new Date(unixtime)
+  console.log(props.gqlres.getPostById) 
+  const date: Date = new Date(props.gqlres.getPostById.createdAt)
 
   return (
     <CtmCard>

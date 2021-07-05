@@ -18,7 +18,7 @@ export const GET_POST = gql`
       content
       createdAt
       authorId
-      updateAt
+      updatedAt
       published
     }
   }

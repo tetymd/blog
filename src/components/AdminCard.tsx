@@ -17,8 +17,7 @@ const CustomCard = styled(Card)({
 })
 
 export default function AdminCard(props: Props) {
-  const unixtime: number = +props.article.createdAt
-  const date: Date = new Date(unixtime)
+  const date: Date = new Date(props.article.createdAt)
 
   return (
     <CustomCard>
