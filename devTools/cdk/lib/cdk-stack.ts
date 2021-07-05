@@ -365,6 +365,16 @@ export class CdkStack extends cdk.Stack {
       description: 'Cognito Identity Pool ID',
     });
 
+    new cdk.CfnOutput(this, 'UserPoolId', {
+      value: userPool.userPoolId,
+      description: 'Cognito User Pool ID',
+    });
+
+    new cdk.CfnOutput(this, 'UserPoolClientId', {
+      value: userPoolClient.userPoolClientId,
+      description: 'Cognito User Pool Client ID',
+    });
+
     // output security group
     new cdk.CfnOutput(this, 'VpcDefaultSecurityGroup', {
       value: vpc.vpcDefaultSecurityGroup

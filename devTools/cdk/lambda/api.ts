@@ -115,6 +115,6 @@ exports.handler = async function(event) {
     case 'updatePost':
       return await updatePost(event.arguments)
     case 'deletePost':
-      return await deletePost(event.augments)
+      return await deletePost(event.arguments)
   }
 };
