@@ -13,7 +13,7 @@ type Post {
   content: String
   createdAt: String
   authorId: ID
-  updateAt: String
+  updatedAt: String
   published: Boolean
 }
 type Query {
