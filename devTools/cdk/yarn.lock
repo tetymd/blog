@@ -32,6 +32,23 @@
     "@aws-cdk/core" "1.111.0"
     constructs "^3.3.69"
 
+"@aws-cdk/aws-appsync@^1.111.0":
+  version "1.111.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-appsync/-/aws-appsync-1.111.0.tgz#8912a123ff49fa5b2a6e8f9b1ba007aa79622665"
+  integrity sha512-oHSFjyJSd9O4smn19epcmoikQiRA6pL0LoZHpck6AjleEHrixgVt0S9f4yj438GjgrlawkE8aBAkzH/TcYo9Rg==
+  dependencies:
+    "@aws-cdk/aws-cognito" "1.111.0"
+    "@aws-cdk/aws-dynamodb" "1.111.0"
+    "@aws-cdk/aws-ec2" "1.111.0"
+    "@aws-cdk/aws-elasticsearch" "1.111.0"
+    "@aws-cdk/aws-iam" "1.111.0"
+    "@aws-cdk/aws-lambda" "1.111.0"
+    "@aws-cdk/aws-rds" "1.111.0"
+    "@aws-cdk/aws-s3-assets" "1.111.0"
+    "@aws-cdk/aws-secretsmanager" "1.111.0"
+    "@aws-cdk/core" "1.111.0"
+    constructs "^3.3.69"
+
 "@aws-cdk/aws-autoscaling-common@1.111.0":
   version "1.111.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-autoscaling-common/-/aws-autoscaling-common-1.111.0.tgz#2cc9b6a76da018bc66e6c3ebb0faf6bcf5400ba8"
@@ -91,7 +108,7 @@
     "@aws-cdk/core" "1.111.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-cognito@^1.111.0":
+"@aws-cdk/aws-cognito@1.111.0", "@aws-cdk/aws-cognito@^1.111.0":
   version "1.111.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-cognito/-/aws-cognito-1.111.0.tgz#8f842aa4e7f8560d35c5b222ee531c3d494c1c83"
   integrity sha512-k0vjUtlqQ7i1KSq09QDb/D9fhjhdmS18CMT6tINeA6GWJnRxIfYlNbvYr0oDfBptrCDGe/GT4FTikzlDD8ZeRA==
@@ -103,6 +120,21 @@
     "@aws-cdk/custom-resources" "1.111.0"
     constructs "^3.3.69"
     punycode "^2.1.1"
+
+"@aws-cdk/aws-dynamodb@1.111.0":
+  version "1.111.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-dynamodb/-/aws-dynamodb-1.111.0.tgz#7ba81419f96ec4767837a4abb2f01523f2f87124"
+  integrity sha512-zdJIhFiu7wpDWT0aW28b6MfrlITrTd4YsgghEngBNQ3A4Y8DMxqIT1iP/4AXf+uxukcI/+8+eysksTDu76aolA==
+  dependencies:
+    "@aws-cdk/aws-applicationautoscaling" "1.111.0"
+    "@aws-cdk/aws-cloudwatch" "1.111.0"
+    "@aws-cdk/aws-iam" "1.111.0"
+    "@aws-cdk/aws-kinesis" "1.111.0"
+    "@aws-cdk/aws-kms" "1.111.0"
+    "@aws-cdk/aws-lambda" "1.111.0"
+    "@aws-cdk/core" "1.111.0"
+    "@aws-cdk/custom-resources" "1.111.0"
+    constructs "^3.3.69"
 
 "@aws-cdk/aws-ec2@1.111.0", "@aws-cdk/aws-ec2@^1.111.0":
   version "1.111.0"
@@ -158,6 +190,23 @@
     "@aws-cdk/cx-api" "1.111.0"
     constructs "^3.3.69"
 
+"@aws-cdk/aws-elasticsearch@1.111.0":
+  version "1.111.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-elasticsearch/-/aws-elasticsearch-1.111.0.tgz#6384b1cf2c5306df7731c542cabbe424360d9257"
+  integrity sha512-r8cI6ZV3ZitqgFjV83E2A3K9KAMyZio28GWlBG/KEETAfhIsM+9RAV9DOW4//WbtQ4FcTxGIftdCO3k3d+RlwQ==
+  dependencies:
+    "@aws-cdk/aws-certificatemanager" "1.111.0"
+    "@aws-cdk/aws-cloudwatch" "1.111.0"
+    "@aws-cdk/aws-ec2" "1.111.0"
+    "@aws-cdk/aws-iam" "1.111.0"
+    "@aws-cdk/aws-kms" "1.111.0"
+    "@aws-cdk/aws-logs" "1.111.0"
+    "@aws-cdk/aws-route53" "1.111.0"
+    "@aws-cdk/aws-secretsmanager" "1.111.0"
+    "@aws-cdk/core" "1.111.0"
+    "@aws-cdk/custom-resources" "1.111.0"
+    constructs "^3.3.69"
+
 "@aws-cdk/aws-events@1.111.0":
   version "1.111.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-events/-/aws-events-1.111.0.tgz#8c311ffbf07a1f6466652e3802f4407af0f8acd3"
@@ -174,6 +223,18 @@
   dependencies:
     "@aws-cdk/core" "1.111.0"
     "@aws-cdk/region-info" "1.111.0"
+    constructs "^3.3.69"
+
+"@aws-cdk/aws-kinesis@1.111.0":
+  version "1.111.0"
+  resolved "https://registry.yarnpkg.com/@aws-cdk/aws-kinesis/-/aws-kinesis-1.111.0.tgz#fccb8d24daa3a3662d955917aada45684c2594ed"
+  integrity sha512-s8cuzA5PuEVUxvMUQAFccDKfITwiw3SB2EQzZ7O+KTOaDKGfLp+U9PFgKElqEQuMtls8hUt4n+iP0gryvKEEHw==
+  dependencies:
+    "@aws-cdk/aws-cloudwatch" "1.111.0"
+    "@aws-cdk/aws-iam" "1.111.0"
+    "@aws-cdk/aws-kms" "1.111.0"
+    "@aws-cdk/aws-logs" "1.111.0"
+    "@aws-cdk/core" "1.111.0"
     constructs "^3.3.69"
 
 "@aws-cdk/aws-kms@1.111.0":
@@ -231,7 +292,7 @@
     "@aws-cdk/core" "1.111.0"
     constructs "^3.3.69"
 
-"@aws-cdk/aws-rds@^1.111.0":
+"@aws-cdk/aws-rds@1.111.0", "@aws-cdk/aws-rds@^1.111.0":
   version "1.111.0"
   resolved "https://registry.yarnpkg.com/@aws-cdk/aws-rds/-/aws-rds-1.111.0.tgz#d4beb649cd7a10c37efd216a8c852a136447f213"
   integrity sha512-OOSed11hcoNL47Y432BFVGl7zv8A/EMXrjSLA52MN4ruTZM92H+/9y3lrqfHOeZOtzA2QjXtD2Lp7tWp7BecpA==

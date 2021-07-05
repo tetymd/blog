@@ -5,7 +5,7 @@ const { readFileSync } = require('fs')
 const prisma = new PrismaClient()
 
 async function main() {
-  const typeDefs = readFileSync('./apollo-server/schema.gql').toString('utf-8')
+  const typeDefs = readFileSync('./cdk/graphql/schema.gql').toString('utf-8')
   const resolvers = {
     Query: {
       allUsers: () => {

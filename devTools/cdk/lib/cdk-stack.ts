@@ -3,6 +3,7 @@ import * as cognito from '@aws-cdk/aws-cognito'
 import * as iam from '@aws-cdk/aws-iam'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as rds from '@aws-cdk/aws-rds'
+import * as appsync from '@aws-cdk/aws-appsync'
 import * as lmd from '@aws-cdk/aws-lambda'
 import * as lmdnode from '@aws-cdk/aws-lambda-nodejs'
 
@@ -302,6 +303,58 @@ export class CdkStack extends cdk.Stack {
         resources: [dbSecret.secretFullArn || ''],
       })
     )
+
+    ////////////////////////////////
+    /// AppSync
+    ////////////////////////////////
+
+    const api = new appsync.GraphqlApi(this, 'Api', {
+      name: 'blog-api',
+      schema: appsync.Schema.fromAsset('graphql/schema.gql'),
+      authorizationConfig: {
+        defaultAuthorization: {
+          authorizationType: appsync.AuthorizationType.IAM
+        },
+      },
+      xrayEnabled: true,
+    });
+    const apiDs = api.addLambdaDataSource('apiLambda', apiLambda)
+
+    // Create Resolver Query
+    apiDs.createResolver({
+      typeName: 'Query',
+      fieldName: 'allUsers'
+    })
+    apiDs.createResolver({
+      typeName: 'Query',
+      fieldName: 'allPosts'
+    })
+    apiDs.createResolver({
+      typeName: 'Query',
+      fieldName: 'getUserById'
+    })
+    apiDs.createResolver({
+      typeName: 'Query',
+      fieldName: 'getPostById'
+    })
+
+    // Create Resolver Mutation
+    apiDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'createPost'
+    })
+    apiDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'updatePost'
+    })
+    apiDs.createResolver({
+      typeName: 'Mutation',
+      fieldName: 'deletePost'
+    })
+
+    new cdk.CfnOutput(this, 'appSyncEndpoint', {
+      value: api.graphqlUrl
+    })
 
     ////////////////////////////////
     /// Outputs
