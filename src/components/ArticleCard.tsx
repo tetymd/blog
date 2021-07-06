@@ -1,7 +1,6 @@
 import {
   styled,
   Card,
-  CardMedia,
   CardContent,
   Box,
   Typography,
@@ -10,11 +9,6 @@ import MDEditor from '@uiw/react-md-editor';
 
 const CtmCard = styled(Card)({
   width: "100%",
-})
-
-const CtmCardMedia = styled(CardMedia)({
-  width: "100%",
-  height: 340
 })
 
 const CtmTypography = styled(Typography)({
@@ -27,10 +21,6 @@ export default function ArticleCard(props: any) {
 
   return (
     <CtmCard>
-      <CtmCardMedia
-        image={`${process.env.PUBLIC_URL}/logo512.png`}
-        title="Contemplative Reptile"
-      />
       <CardContent>
         <Box mt={2}>
           <CtmTypography gutterBottom variant="h4">
