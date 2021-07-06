@@ -12,7 +12,7 @@ import AdminCreateArticle from './pages/AdminCreateArticle'
 import AdminAuth from './pages/AdminAuth'
 
 import Amplify, { Auth } from 'aws-amplify'
-import { createAuthLink, AuthOptions } from 'aws-appsync-auth-link'
+import { createAuthLink, AuthOptions, AUTH_TYPE  } from 'aws-appsync-auth-link'
 import { createSubscriptionHandshakeLink } from 'aws-appsync-subscription-link'
 
 import {
@@ -41,8 +41,8 @@ function App() {
   const url = `${process.env.REACT_APP_APPSYNC_ENDPOINT}`
   const region = `${process.env.REACT_APP_AWS_REGION}`
   const auth: AuthOptions = {
-    type: 'AWS_IAM',
-    credentials: () => Auth.currentCredentials()
+    type: AUTH_TYPE.AWS_IAM,
+    credentials: () => Auth.currentCredentials() 
   };
 
   const link = ApolloLink.from([
