@@ -1,15 +1,11 @@
-import React, { useContext, useState } from 'react'
+import { createContext, useState, useEffect, useReducer, useContext } from 'react'
 import {
   BrowserRouter as Router,
   Route,
+  Redirect
 } from 'react-router-dom'
+import Routing from './Routing'
 import { styled, Box } from '@material-ui/core'
-import Home from './pages/Home'
-import ArticlePage from './pages/Article'
-import Admin from './pages/Admin'
-import AdminArticlePage from './pages/AdminArticle'
-import AdminCreateArticle from './pages/AdminCreateArticle'
-import AdminAuth from './pages/AdminAuth'
 
 import Amplify, { Auth } from 'aws-amplify'
 import { createAuthLink, AuthOptions, AUTH_TYPE  } from 'aws-appsync-auth-link'
@@ -33,43 +29,77 @@ Amplify.configure({
   userPoolWebClientId: process.env.REACT_APP_USER_POOL_WEB_CLIENT_ID
 })
 
+const url = `${process.env.REACT_APP_APPSYNC_ENDPOINT}`
+const region = `${process.env.REACT_APP_AWS_REGION}`
+const auth: AuthOptions = {
+  type: AUTH_TYPE.AWS_IAM,
+  credentials: () => Auth.currentCredentials() 
+};
+
+const link = ApolloLink.from([
+  createAuthLink({ url, region, auth }),
+  createSubscriptionHandshakeLink({ url, region, auth })
+]);
+
+const client = new ApolloClient({
+  link: link,
+  // uri: 'http://localhost:4000',
+  cache: new InMemoryCache()
+});
+
 const CustomBox = styled(Box)({
   backgroundColor: 'rgb(240,240,240)',
 })
 
+type State = {
+  isSignIn: Boolean
+}
+
+type Action = { type: 'signin' } | { type: 'signout' }
+
+function reducer(state: State, action: Action) {
+  switch (action.type) {
+    case 'signin':
+      return {
+        ...state,
+        isSignIn: true
+      }
+    case 'signout':
+      return {
+        ...state,
+        isSignIn: false
+      }
+    default:
+      return state
+  }
+}
+
+export const AuthContext = createContext({} as {
+  state: State,
+  dispatch: React.Dispatch<Action>
+})
+
+const initialState = { isSignIn: false }
+
+const AuthProvider = ({children}: any) => {
+  const [state, dispatch] = useReducer(reducer, initialState)
+  return <AuthContext.Provider value={{state, dispatch}}>
+    {children}
+  </AuthContext.Provider>
+}
+
 function App() {
-  const url = `${process.env.REACT_APP_APPSYNC_ENDPOINT}`
-  const region = `${process.env.REACT_APP_AWS_REGION}`
-  const auth: AuthOptions = {
-    type: AUTH_TYPE.AWS_IAM,
-    credentials: () => Auth.currentCredentials() 
-  };
-
-  const link = ApolloLink.from([
-    createAuthLink({ url, region, auth }),
-    createSubscriptionHandshakeLink({ url, region, auth })
-  ]);
-
-  const client = new ApolloClient({
-    link: link,
-    // uri: 'http://localhost:4000',
-    cache: new InMemoryCache()
-  });
-
   return (
     <CustomBox>
-      <ApolloProvider client={client}>
-        <Router>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/articles/:id" component={ArticlePage} />
-          <Route exact path="/admin/signin" component={AdminAuth} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/admin/articles/:id" component={AdminArticlePage} />
-          <Route exact path="/admin/newarticle" component={AdminCreateArticle} />
-        </Router>
-      </ApolloProvider>
+      <AuthProvider>
+        <ApolloProvider client={client}>
+          <Routing />
+        </ApolloProvider>
+      </AuthProvider>
     </CustomBox>
   );
 }
 
-export default App;
+
+
+export default App

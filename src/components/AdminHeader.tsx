@@ -3,8 +3,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Box,
-  Button,
 } from '@material-ui/core'
 import { Link, useHistory } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
@@ -16,15 +14,12 @@ const CtmTypography = styled(Typography)({
   flexGrow: 1
 })
 
-const CtmBox = styled(Box)({
-})
-
 export default function AdminHeader() {
   const history = useHistory()
 
   const handleClick = () => {
     Auth.signOut()
-    history.push("/admin/signin")
+    history.push("/")
   }
 
   return (
@@ -35,7 +30,7 @@ export default function AdminHeader() {
             TECHI BLOG Admin
           </Link>
         </CtmTypography>
-        <Link to="/admin/newarticle">
+        <Link to="/admin/new">
           <Typography variant="subtitle1">
             新規作成
           </Typography>

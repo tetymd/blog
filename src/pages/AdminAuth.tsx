@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useContext, useReducer } from 'react'
 import {
   styled,
   Box,
@@ -10,23 +10,12 @@ import {
   Grid
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
-import { Redirect } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
+import { AuthContext } from '../App'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh",
-})
-
-const CtmTextField = styled(TextField)({
-  width: "92%",
-})
-
-const CtmButton = styled(Button)({
-  width: "8%",
-  marginLeft: 18,
-  marginTop: 8,
-  marginBottom: 8,
-  marginRight: 18,
 })
 
 const CtmCard = styled(Card)({
@@ -42,7 +31,8 @@ const CtmTypography = styled(Typography)({
 export default function AdminAuth() {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
-  const [isSignIn, setIsSignIn] = useState(false)
+  const { state, dispatch } = useContext(AuthContext)
+  const history = useHistory()
 
   const handleChangeUserName = (e: any) => {
     setUsername(e.target.value)
@@ -52,49 +42,40 @@ export default function AdminAuth() {
     setPassword(e.target.value)
   }
 
-  const _ = (async () => {
+  const signIn = async () => {
     try {
-      const session = await Auth.currentSession()
-      console.log(session)
-      setIsSignIn(true)
-      // const user = await Auth.currentAuthenticatedUser()
-      // console.log(user)
+      const user = await Auth.signIn(username, password)
+      console.log(user, state)
+      dispatch({ type: 'signin' })
+      console.log(state)
+      history.push("/admin")
     } catch (error) {
-      console.log(error)
-      setIsSignIn(false)
+      console.log("error:", error)
     }
-  })()
-
-  const signIn = async (username: string, passwordS: string) => {
-    const user = await Auth.signIn(username, password)
-    console.log(user)
-    setIsSignIn(true)
   }
 
   return (
     <Box>
       <AdminHeader/>
       <CtmBox pt={10} pb={3}>
-        { isSignIn ? <Redirect to="/admin"/>:
-          <CtmCard>
-            <CardContent>
-              <Grid container direction="column" justify="center" alignItems="center" spacing={2} >
-                <Grid item >
-                  <CtmTypography variant="h4">サインイン</CtmTypography>
-                </Grid>
-                <Grid item >
-                  <TextField label="ユーザー名" variant="filled" fullWidth onChange={e => handleChangeUserName(e)} />
-                </Grid>
-                <Grid item >
-                  <TextField label="パスワード" variant="filled" fullWidth type="password" autoComplete="current-password" onChange={e => handleChangePassword(e)} />
-                </Grid>
-                <Grid item >
-                  <Button variant="contained" color="primary" onClick={() => { signIn(username, password) }}>サインイン</Button>
-                </Grid>
+        <CtmCard>
+          <CardContent>
+            <Grid container direction="column" justify="center" alignItems="center" spacing={2} >
+              <Grid item >
+                <CtmTypography variant="h4">サインイン</CtmTypography>
               </Grid>
-            </CardContent>
-          </CtmCard>
-        }
+              <Grid item >
+                <TextField label="ユーザー名" variant="filled" fullWidth onChange={e => handleChangeUserName(e)} />
+              </Grid>
+              <Grid item >
+                <TextField label="パスワード" variant="filled" fullWidth type="password" autoComplete="current-password" onChange={e => handleChangePassword(e)} />
+              </Grid>
+              <Grid item >
+                <Button variant="contained" color="primary" onClick={() => { signIn() }}>サインイン</Button>
+              </Grid>
+            </Grid>
+          </CardContent>
+        </CtmCard>
       </CtmBox>
     </Box>
   )
