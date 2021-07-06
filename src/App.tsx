@@ -61,10 +61,10 @@ function App() {
         <Router>
           <Route exact path="/" component={Home} />
           <Route exact path="/articles/:id" component={ArticlePage} />
-          <Route exact path="/admin/signin" component={AdminAuth} />
-          <Route exact path="/admin" component={Admin} />
-          <Route exact path="/admin/articles/:id" component={AdminArticlePage} />
-          <Route exact path="/admin/newarticle" component={AdminCreateArticle} />
+          <Route exact path={process.env.REACT_APP_ADMIN_URL+"/signin"} component={AdminAuth} />
+          <Route exact path={process.env.REACT_APP_ADMIN_URL} component={Admin} />
+          <Route exact path={process.env.REACT_APP_ADMIN_URL+"/articles/:id"} component={AdminArticlePage} />
+          <Route exact path={process.env.REACT_APP_ADMIN_URL+"/articles/new"} component={AdminCreateArticle} />
         </Router>
       </ApolloProvider>
     </CustomBox>
