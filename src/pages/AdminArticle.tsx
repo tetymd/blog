@@ -1,9 +1,6 @@
-import { useState } from 'react'
 import {
   styled,
   Box,
-  TextField,
-  Button,
   Grid,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
@@ -15,19 +12,6 @@ import { Link, useParams } from 'react-router-dom'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
-})
-
-const CtmTextField = styled(TextField)({
-  width: "92%",
-})
-
-const ButtonBox = styled(Button)({
-  width: "100%"
-})
-
-const ToolBar = styled(Box)({
-  display: "flex",
-  justifyContent: "flex-end",
 })
 
 export default function AdminArticlePage() {

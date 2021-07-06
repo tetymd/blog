@@ -6,13 +6,7 @@ import {
   Box,
   Typography,
 } from '@material-ui/core'
-import { createMuiTheme, responsiveFontSizes } from '@material-ui/core/styles';
 import MDEditor from '@uiw/react-md-editor';
-import { Article } from '../types'
-
-
-let theme = createMuiTheme();
-theme = responsiveFontSizes(theme);
 
 const CtmCard = styled(Card)({
   width: "100%",

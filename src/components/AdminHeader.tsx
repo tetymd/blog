@@ -3,8 +3,6 @@ import {
   AppBar,
   Toolbar,
   Typography,
-  Box,
-  Button,
 } from '@material-ui/core'
 import { Link, useHistory } from 'react-router-dom'
 import { Auth } from 'aws-amplify'
@@ -14,9 +12,6 @@ const CtmAppBar = styled(AppBar)({
 
 const CtmTypography = styled(Typography)({
   flexGrow: 1
-})
-
-const CtmBox = styled(Box)({
 })
 
 export default function AdminHeader() {

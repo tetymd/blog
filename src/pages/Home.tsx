@@ -5,7 +5,7 @@ import {
 import AppHeader from '../components/AppHeader'
 import AppFooter from '../components/AppFooter'
 import ArticleList from '../components/ArticleList'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_ALL_POSTS } from '../graphql/query'
 
 const CtmBox = styled(Box)({

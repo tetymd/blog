@@ -17,18 +17,6 @@ const CtmBox = styled(Box)({
   minHeight: "100vh",
 })
 
-const CtmTextField = styled(TextField)({
-  width: "92%",
-})
-
-const CtmButton = styled(Button)({
-  width: "8%",
-  marginLeft: 18,
-  marginTop: 8,
-  marginBottom: 8,
-  marginRight: 18,
-})
-
 const CtmCard = styled(Card)({
   width: "60%",
   height: 300,

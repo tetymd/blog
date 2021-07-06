@@ -1,14 +1,9 @@
 import {
-  styled,
-  Box,
-  TextField,
   Button,
-  Grid,
 } from '@material-ui/core'
 import { GET_ALL_POSTS, DELETE_POST } from '../graphql/query'
 import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom'
-import { PartyModeSharp } from '@material-ui/icons';
 
 export default function DeletePostButton() {
   const params: any = useParams()
