@@ -13,12 +13,6 @@ const CtmBox = styled(Box)({
 })
 
 export default function Admin() {
-  const anonymousUser = async () => (
-    await Auth.currentCredentials()
-  ).sessionToken
-
-  console.log(anonymousUser)
-  
   const { loading, data } = useQuery(GET_ALL_POSTS)
 
   return (
