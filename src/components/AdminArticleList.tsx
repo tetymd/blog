@@ -10,7 +10,7 @@ const GridItem = styled(Grid)({
 })
 
 function AdminArticleList(props: any) {
-  console.log(props.gqlres.allPosts)
+  console.log(props.gqlres)
   let items: any[] = []
 
   for(var i in props.gqlres.allPosts){

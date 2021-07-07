@@ -5,7 +5,6 @@ import { AuthContext } from '../App'
 
 function PrivateRoute({ component, ...rest }: any) {
   const { state } = useContext(AuthContext)
-  console.log(state.isSignIn, component)
   const Component = component
   return (
     <Route
