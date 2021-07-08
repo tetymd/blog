@@ -43,7 +43,7 @@ export default function Routing() {
         <Route exact path="/articles/:id" component={ArticlePage} />
         <Route exact path="/signin" component={AdminAuth} />
         <Route exact path="/" component={Home} />
-        <Route exact path={process.env.REACT_APP_ADMIN_URL+"/new"} component={AdminCreateArticle} />
+        <PrivateRoute exact path={process.env.REACT_APP_ADMIN_URL+"/new"} component={AdminCreateArticle} />
         <PrivateRoute exact path={process.env.REACT_APP_ADMIN_URL+"/articles/:id"} component={AdminArticlePage} />
         <PrivateRoute exact path={process.env.REACT_APP_ADMIN_URL} component={Admin} />
       </Switch>

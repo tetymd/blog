@@ -21,7 +21,7 @@ const GridItem = styled(Grid)({
 export default function ArticlePage() {
   const params: any = useParams()
   console.log(params.id)
-  const { loading, data } = useQuery(GET_POST, {
+  const { loading, data } = useQuery(GET_POST.query, {
     variables: { id: params.id },
   })
 

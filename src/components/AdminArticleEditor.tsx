@@ -32,7 +32,7 @@ export default function AdminArticleEditor(props: any) {
   const [title, setTitle] = useState(props.gqlres.getPostById.title)
   const [value, setValue] = useState(props.gqlres.getPostById.content)
   const history = useHistory()
-  const [updatePost, { data }] = useMutation(UPDATE_POST)
+  const [updatePost, { data }] = useMutation(UPDATE_POST.mutation)
 
   const handle = (e: any) => {
     setValue(e)

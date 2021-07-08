@@ -13,7 +13,7 @@ const CtmBox = styled(Box)({
 })
 
 export default function Admin() {
-  const { loading, error, data } = useQuery(GET_ALL_POSTS, { errorPolicy: 'all', onError: (error) => { console.log(error) } })
+  const { loading, error, data } = useQuery(GET_ALL_POSTS.query, { errorPolicy: 'all', onError: (error) => { console.log(error) } })
 
   return (
     <Box>

@@ -17,21 +17,16 @@ type GqlResult = {
   [key: string]: any
 }
 
-export default function Home() {
+export const GqlQurey = ({ gql, component, ...rest }: any) => {
   const refetchCounter = useRef(5)
   const [apolloError, setApolloError] = useState<ApolloError>()
-  const { loading, error, data, refetch } = useQuery(GET_ALL_POSTS, {
+  const { loading, data, refetch } = useQuery(gql.query, {
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true,
-    onError: (error) => {
-      console.log("data: ", data)
-      console.log("error:", error)
-      console.log("loading:", loading)
-      console.log(refetchCounter.current)
-      console.log(apolloError?.networkError)
-      
+    onError: (error) => {      
       refetchCounter.current -= 1
       if (refetchCounter.current >= 0) {
+        console.log('refetching...')
         setTimeout(refetch, 1500)
       } else {
         setApolloError(error)
@@ -40,27 +35,28 @@ export default function Home() {
   })
 
   const result: GqlResult | undefined = data
-  console.log(result)
 
-  console.log("data: ", data)
-  console.log("NetworkError:", error?.networkError)
-  console.log("graphQLError:", error?.graphQLErrors)
-  console.log("loading:", loading)
-  console.log("result: ", result?.["allPosts"])
+  return (
+    <Box>
+      {
+        apolloError?.networkError ?
+          <p>ネットワークエラー</p>:
+          apolloError ?
+            <p>サーバーエラー</p>:
+            (loading || data == undefined || result?.[gql.name] == null) ?
+              <p>Loading...</p>:
+              component(result)
+      }
+    </Box>
+  )
+}
 
+export default function Home() {
   return (
     <Box>
       <AppHeader/>
       <CtmBox pt={10} pb={3}>
-        {
-          apolloError?.networkError ?
-            <p>ネットワークエラー</p>:
-            apolloError ?
-              <p>サーバーエラー</p>:
-              (loading || data == undefined || result?.["allPosts"] == null) ?
-                <p>Loading...</p>:
-                <ArticleList gqlres={data}/>
-        }
+        <GqlQurey gql={GET_ALL_POSTS} component={ArticleList} />
       </CtmBox>
       <AppFooter/>
     </Box>
