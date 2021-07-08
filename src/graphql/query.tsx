@@ -81,7 +81,7 @@ export const UPDATE_POST: GqlMutation = {
 }
 
 export const DELETE_POST: GqlMutation = {
-  name: 'CreatePost',
+  name: 'DeletePost',
   mutation: gql`
     mutation DeletePost(
       $postId: ID

@@ -18,7 +18,7 @@ function ArticleList(props: any) {
     items.push(
       <GridItem item xs={10} sm={9} md={6} lg={6} xl={5} key={i}>
         <Box m={0.8}>
-          <MediaCard article={props.allPosts[i]} />
+          { MediaCard(props.allPosts[i]) }
         </Box>
       </GridItem>
     )

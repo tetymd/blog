@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useRef} from 'react'
 import {
   styled,
   Box,
@@ -6,9 +6,9 @@ import {
   Button,
 } from '@material-ui/core'
 import MDEditor from '@uiw/react-md-editor';
-import { CREATE_POST, GET_ALL_POSTS } from '../graphql/query'
-import { useMutation } from '@apollo/client';
-import { Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom';
+import { ApolloError, useMutation } from '@apollo/client';
+import { GET_ALL_POSTS } from '../graphql/query';
 
 const CtmTextField = styled(TextField)({
   width: "92%",
@@ -27,21 +27,22 @@ const ToolBar = styled(Box)({
   justifyContent: "flex-end",
 })
 
-export default function AdminArticleEditorCreate() {
-  // ジェネリクスを使えばハンドラを作らなくてもいい？
+export const Editor = ({ gql, ...rest }: any) => {
   const [title, setTitle] = useState("")
   const [value, setValue] = useState("")
-  const [createPost, { data }] = useMutation(CREATE_POST.mutation, {
-    update (cache, { data }) {
-      // We use an update function here to write the 
-      // new value of the GET_ALL_TODOS query.
+  const history = useHistory()
+  const refetchCounter = useRef(5)
+  const [apolloError, setApolloError] = useState<ApolloError>()
+  const [mutation, { loading, error, data }] = useMutation(gql.mutation, {
+    update: (cache, { data }) => {
+      console.log(data)
       const newPostFromResponse = data?.createPost;
       var existingPosts: any = cache.readQuery({
         query: GET_ALL_POSTS.query,
       });
 
       if (existingPosts && newPostFromResponse) {
-        console.log("update")
+        console.log("cache update")
         cache.writeQuery({
           query: GET_ALL_POSTS.query,
           data: {
@@ -51,6 +52,20 @@ export default function AdminArticleEditorCreate() {
             ],
           },
         });
+      }
+    },
+    onCompleted: () => {
+      console.log("upload compleated")
+      history.push("/admin")
+    },
+    onError: (error: any) => {   
+      console.log(error)   
+      refetchCounter.current -= 1
+      if (refetchCounter.current >= 0) {
+        console.log('retrying...')
+        setTimeout(mutation, 2000)
+      } else {
+        setApolloError(error)
       }
     }
   })
@@ -65,7 +80,7 @@ export default function AdminArticleEditorCreate() {
 
   const handleSubmit = () => {
     console.log(value, title)
-    createPost({
+    mutation({
       variables: {
         title: title,
         content: value,
@@ -74,19 +89,33 @@ export default function AdminArticleEditorCreate() {
     })
   }
 
+  const editor = () => {
+    return (
+      <div>
+        <ToolBar mb={3}>
+        <CtmTextField id="filled-basic" label="タイトル" variant="filled" defaultValue={title} onChange={e => handleChange(e)} />
+          <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit() }}>投稿</CtmButton>
+        </ToolBar>
+        <MDEditor
+          height={800}
+          value={value}
+          onChange={(e) => handle(e)}
+        />
+      </div>
+    )
+  }
+  
   return (
     <form>
-      <ToolBar mb={3}>
-        <CtmTextField id="filled-basic" label="タイトル" variant="filled" defaultValue={title} onChange={e => handleChange(e)} />
-        <Link to="/admin">
-          <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit() }}>投稿</CtmButton>
-        </Link>
-      </ToolBar>
-      <MDEditor
-        height={800}
-        value={value}
-        onChange={(e) => handle(e)}
-      />
+      {
+        apolloError?.networkError ?
+          <p>ネットワークエラー</p>:
+          apolloError ?
+            <p>サーバーエラー</p>:
+            (loading || error) ?
+            <p>Loading...</p>:
+            editor()
+      }
     </form>
   )
 }
