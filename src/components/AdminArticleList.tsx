@@ -10,15 +10,15 @@ const GridItem = styled(Grid)({
 })
 
 function AdminArticleList(props: any) {
-  console.log(props.gqlres.allPosts)
+  console.log(props)
   let items: any[] = []
 
-  for(var i in props.gqlres.allPosts){
-    console.log(props.gqlres.allPosts[i])
+  for(var i in props.allPosts){
+    console.log(props.allPosts[i])
     items.push(
       <GridItem item xs={10} sm={9} md={6} lg={6} xl={5} key={i}>
         <Box m={0.8}>
-          <AdminCard article={props.gqlres.allPosts[i]} />
+          { AdminCard(props.allPosts[i]) }
         </Box>
       </GridItem>
     )

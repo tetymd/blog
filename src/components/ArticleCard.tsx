@@ -16,15 +16,15 @@ const CtmTypography = styled(Typography)({
 })
 
 export default function ArticleCard(props: any) {
-  console.log(props.gqlres.getPostById) 
-  const date: Date = new Date(props.gqlres.getPostById.createdAt)
+  console.log(props) 
+  const date: Date = new Date(props.getPostById.createdAt)
 
   return (
     <CtmCard>
       <CardContent>
         <Box mt={2}>
           <CtmTypography gutterBottom variant="h4">
-            {props.gqlres.getPostById.title}
+            {props.getPostById.title}
           </CtmTypography>
         </Box>
         <Box mr={3}>
@@ -32,7 +32,7 @@ export default function ArticleCard(props: any) {
             {date.toLocaleDateString()}
           </Typography>
         </Box>
-        <MDEditor.Markdown source={props.gqlres.getPostById.content}/>
+        <MDEditor.Markdown source={props.getPostById.content}/>
       </CardContent>
     </CtmCard>
   )

@@ -8,10 +8,10 @@ import { useParams } from 'react-router-dom'
 export default function DeletePostButton() {
   const params: any = useParams()
   console.log(params.id)
-  const [deletePost, { data }] = useMutation(DELETE_POST, {
+  const [deletePost, { data }] = useMutation(DELETE_POST.mutation, {
     update (cache) {
       var existingPosts: any = cache.readQuery({
-        query: GET_ALL_POSTS,
+        query: GET_ALL_POSTS.query,
       });
       const newPosts = existingPosts.allPosts.filter((p: any) => (p.id !== params.id))
       console.log(newPosts)
@@ -19,7 +19,7 @@ export default function DeletePostButton() {
       if (existingPosts && newPosts) {
         console.log("update")
         cache.writeQuery({
-          query: GET_ALL_POSTS,
+          query: GET_ALL_POSTS.query,
           data: {
             allPosts: newPosts,
           },
