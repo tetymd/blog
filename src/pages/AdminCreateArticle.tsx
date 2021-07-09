@@ -3,8 +3,7 @@ import {
   Box,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
-import { Editor } from '../components/AdminArticleEditorCreate';
-import { CREATE_POST } from '../graphql/query';
+import AdminArticleEditorCreate from '../components/AdminArticleEditorCreate';
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -15,7 +14,7 @@ export default function AdminCreateArticle() {
     <Box>
       <AdminHeader/>
       <CtmBox pt={12} pb={12} pl={12} pr={12}>
-        <Editor gql={CREATE_POST} />
+        <AdminArticleEditorCreate />
       </CtmBox>
     </Box>
   )
