@@ -38,12 +38,13 @@ const auth: AuthOptions = {
 
 const link = ApolloLink.from([
   createAuthLink({ url, region, auth }),
-  createSubscriptionHandshakeLink({ url, region, auth }),
+  createSubscriptionHandshakeLink({ url, region, auth })
 ]);
 
 const client = new ApolloClient({
   link: link,
-  cache: new InMemoryCache(),
+  // uri: 'http://localhost:4000',
+  cache: new InMemoryCache()
 });
 
 const CustomBox = styled(Box)({

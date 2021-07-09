@@ -13,7 +13,7 @@ const CtmBox = styled(Box)({
 })
 
 export default function Admin() {
-  const { loading, error, data } = useQuery(GET_ALL_POSTS, { errorPolicy: 'all', onError: (error) => { console.log(error) } })
+  const { loading, data } = useQuery(GET_ALL_POSTS)
 
   return (
     <Box>
@@ -22,7 +22,7 @@ export default function Admin() {
         { loading ? (
           <p>Loading...</p>
         ): (
-          error ? <div></div> : <AdminArticleList gqlres={data} />
+          <AdminArticleList gqlres={data} />
         )}
       </CtmBox>
     </Box>
