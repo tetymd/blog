@@ -31,19 +31,19 @@ export default function AdminArticleEditorCreate() {
   // ジェネリクスを使えばハンドラを作らなくてもいい？
   const [title, setTitle] = useState("")
   const [value, setValue] = useState("")
-  const [createPost, { data }] = useMutation(CREATE_POST.mutation, {
+  const [createPost, { data }] = useMutation(CREATE_POST, {
     update (cache, { data }) {
       // We use an update function here to write the 
       // new value of the GET_ALL_TODOS query.
       const newPostFromResponse = data?.createPost;
       var existingPosts: any = cache.readQuery({
-        query: GET_ALL_POSTS.query,
+        query: GET_ALL_POSTS,
       });
 
       if (existingPosts && newPostFromResponse) {
         console.log("update")
         cache.writeQuery({
-          query: GET_ALL_POSTS.query,
+          query: GET_ALL_POSTS,
           data: {
             allPosts: [
               ...existingPosts?.allPosts,

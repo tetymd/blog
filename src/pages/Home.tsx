@@ -17,16 +17,21 @@ type GqlResult = {
   [key: string]: any
 }
 
-export const GqlQurey = ({ gql, component, ...rest }: any) => {
+export default function Home() {
   const refetchCounter = useRef(5)
   const [apolloError, setApolloError] = useState<ApolloError>()
-  const { loading, data, refetch } = useQuery(gql.query, {
+  const { loading, error, data, refetch } = useQuery(GET_ALL_POSTS, {
     errorPolicy: 'all',
     notifyOnNetworkStatusChange: true,
-    onError: (error) => {      
+    onError: (error) => {
+      console.log("data: ", data)
+      console.log("error:", error)
+      console.log("loading:", loading)
+      console.log(refetchCounter.current)
+      console.log(apolloError?.networkError)
+      
       refetchCounter.current -= 1
       if (refetchCounter.current >= 0) {
-        console.log('refetching...')
         setTimeout(refetch, 1500)
       } else {
         setApolloError(error)
@@ -35,28 +40,27 @@ export const GqlQurey = ({ gql, component, ...rest }: any) => {
   })
 
   const result: GqlResult | undefined = data
+  console.log(result)
 
-  return (
-    <Box>
-      {
-        apolloError?.networkError ?
-          <p>ネットワークエラー</p>:
-          apolloError ?
-            <p>サーバーエラー</p>:
-            (loading || data == undefined || result?.[gql.name] == null) ?
-              <p>Loading...</p>:
-              component(result)
-      }
-    </Box>
-  )
-}
+  console.log("data: ", data)
+  console.log("NetworkError:", error?.networkError)
+  console.log("graphQLError:", error?.graphQLErrors)
+  console.log("loading:", loading)
+  console.log("result: ", result?.["allPosts"])
 
-export default function Home() {
   return (
     <Box>
       <AppHeader/>
       <CtmBox pt={10} pb={3}>
-        <GqlQurey gql={GET_ALL_POSTS} component={ArticleList} />
+        {
+          apolloError?.networkError ?
+            <p>ネットワークエラー</p>:
+            apolloError ?
+              <p>サーバーエラー</p>:
+              (loading || data == undefined || result?.["allPosts"] == null) ?
+                <p>Loading...</p>:
+                <ArticleList gqlres={data}/>
+        }
       </CtmBox>
       <AppFooter/>
     </Box>

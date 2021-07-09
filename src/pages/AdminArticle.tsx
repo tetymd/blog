@@ -18,7 +18,7 @@ export default function AdminArticlePage() {
   // ジェネリクスを使えばハンドラを作らなくてもいい？
   const params: any = useParams()
   console.log(params.id)
-  const { loading, data } = useQuery(GET_POST.query, {
+  const { loading, data } = useQuery(GET_POST, {
     variables: { id: params.id }
   })
 

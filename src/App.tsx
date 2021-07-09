@@ -43,7 +43,6 @@ const link = ApolloLink.from([
 
 const client = new ApolloClient({
   link: link,
-  // url: 'http://localhost:4000
   cache: new InMemoryCache(),
 });
 
