@@ -7,8 +7,7 @@ import {
 } from '@material-ui/core'
 import MDEditor from '@uiw/react-md-editor';
 import { UPDATE_POST } from '../graphql/request'
-import { MutationFunction, MutationResult, QueryResult, useMutation } from '@apollo/client';
-import { useHistory } from 'react-router';
+import { MutationFunction, MutationResult, QueryResult } from '@apollo/client';
 import { Mutation } from '../graphql/Query';
 
 const CtmTextField = styled(TextField)({
@@ -37,7 +36,7 @@ export default function AdminArticleEditor(result: QueryResult) {
   }
 
   return (
-    <Mutation mutation={UPDATE_POST} queryResultData={result.data}>
+    <Mutation mutation={UPDATE_POST} queryResultData={result.data} >
       { PipeEditor }
     </Mutation>
   )
