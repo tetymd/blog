@@ -1,7 +1,7 @@
 import {
   Button,
 } from '@material-ui/core'
-import { GET_ALL_POSTS, DELETE_POST } from '../graphql/query'
+import { GET_ALL_POSTS, DELETE_POST } from '../graphql/request'
 import { useMutation } from '@apollo/client';
 import { useParams } from 'react-router-dom'
 

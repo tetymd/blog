@@ -53,7 +53,9 @@ export const UPDATE_POST = gql`
       content: $content
       postId: $postId
     ) {
+      id
       title
+      content
     }
   }
 `

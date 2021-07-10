@@ -6,9 +6,10 @@ import {
 import AdminHeader from '../components/AdminHeader'
 import AdminArticleEditor from '../components/AdminArticleEditor';
 import DeletePostButton from '../components/DeletePostButton';
-import { GET_POST } from '../graphql/query'
+import { GET_POST } from '../graphql/request'
 import { useQuery } from '@apollo/client';
 import { Link, useParams } from 'react-router-dom'
+import { Query } from '../graphql/Query';
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -18,9 +19,6 @@ export default function AdminArticlePage() {
   // ジェネリクスを使えばハンドラを作らなくてもいい？
   const params: any = useParams()
   console.log(params.id)
-  const { loading, data } = useQuery(GET_POST, {
-    variables: { id: params.id }
-  })
 
   return (
     <Box>
@@ -28,11 +26,9 @@ export default function AdminArticlePage() {
       <CtmBox pt={12} pb={12} pl={12} pr={12}>
         <Grid container direction="column" spacing={2}>
           <Grid item lg={12}>
-            { loading ? (
-              <p>Loading...</p>
-            ): (
-              <AdminArticleEditor gqlres={data} />
-            )}
+            <Query query={GET_POST} variables={{ id: params.id }} errorPolicy="all" notifyOnNetworkStatusChange={true} >
+              { AdminArticleEditor }
+            </Query>
           </Grid>
           <Grid container item justify="flex-end">
             <Link to="/admin">
@@ -44,7 +40,3 @@ export default function AdminArticlePage() {
     </Box>
   )
 }
-
-
-
-
