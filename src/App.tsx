@@ -1,9 +1,4 @@
-import { createContext, useState, useEffect, useReducer, useContext } from 'react'
-import {
-  BrowserRouter as Router,
-  Route,
-  Redirect
-} from 'react-router-dom'
+import { createContext, useReducer } from 'react'
 import Routing from './Routing'
 import { styled, Box } from '@material-ui/core'
 
@@ -79,10 +74,24 @@ export const AuthContext = createContext({} as {
   dispatch: React.Dispatch<Action>
 })
 
-const initialState = { isSignIn: false }
+const checkAuth = async(state: any) => {
+  try {
+    const r =  await Auth.currentSession()
+    console.log(r)
+    state.current = { isSignIn: true }
+  } catch (error) {
+    console.log("Error:", error)
+    state.current = { isSignIn: false }
+  }
+}
 
-const AuthProvider = ({children}: any) => {
-  const [state, dispatch] = useReducer(reducer, initialState)
+const AuthProvider = ({children }: any) => {
+  // 暫定対応
+  const k = localStorage.key(1)
+  const authState = () => { return (k && k?.indexOf("CognitoIdentityServiceProvider") >= 0) ? { isSignIn: true } : { isSignIn: false } }
+  console.log(authState(), (k && k?.indexOf("CognitoIdentityServiceProvider") >= 0))
+
+  const [state, dispatch] = useReducer(reducer, authState())
   return <AuthContext.Provider value={{state, dispatch}}>
     {children}
   </AuthContext.Provider>
@@ -99,7 +108,5 @@ function App() {
     </CustomBox>
   );
 }
-
-
 
 export default App

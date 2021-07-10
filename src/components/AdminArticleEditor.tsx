@@ -44,11 +44,10 @@ export default function AdminArticleEditor(result: QueryResult) {
 }
 
 export const PipeEditor = (mutation: MutationFunction, result: MutationResult, data: any) => {
-  const history = useHistory()
   console.log(data)
   console.log(data.getPostById.id)
-  const handleSubmit = async({ value, title }: any) => {
-    console.log(value, title)
+
+  const handleSubmit = async({ title, value }: any) => {
     try {
       await mutation({
         variables: {
@@ -57,7 +56,6 @@ export const PipeEditor = (mutation: MutationFunction, result: MutationResult, d
           postId: data.getPostById.id
         }
       })
-      history.push("/admin")
     } catch (error) {
       console.log(error)
     }
