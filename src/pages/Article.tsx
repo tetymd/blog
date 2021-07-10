@@ -6,8 +6,8 @@ import {
 import AppHeader from '../components/AppHeader'
 import AppFooter from '../components/AppFooter'
 import ArticleCard from '../components/ArticleCard'
-import { useQuery } from '@apollo/client';
-import { GET_POST } from '../graphql/query'
+import { useQuery } from '@apollo/client'
+import { GET_POST } from '../graphql/request'
 import { useParams } from 'react-router-dom'
 
 const CtmBox = styled(Box)({

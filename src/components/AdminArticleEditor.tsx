@@ -6,9 +6,10 @@ import {
   Button,
 } from '@material-ui/core'
 import MDEditor from '@uiw/react-md-editor';
-import { UPDATE_POST } from '../graphql/query'
-import { useMutation } from '@apollo/client';
+import { UPDATE_POST } from '../graphql/request'
+import { MutationFunction, MutationResult, QueryResult, useMutation } from '@apollo/client';
 import { useHistory } from 'react-router';
+import { Mutation } from '../graphql/Query';
 
 const CtmTextField = styled(TextField)({
   width: "92%",
@@ -27,12 +28,47 @@ const ToolBar = styled(Box)({
   justifyContent: "flex-end",
 })
 
-export default function AdminArticleEditor(props: any) {
-  // ジェネリクスを使えばハンドラを作らなくてもいい？
-  const [title, setTitle] = useState(props.gqlres.getPostById.title)
-  const [value, setValue] = useState(props.gqlres.getPostById.content)
+export default function AdminArticleEditor(result: QueryResult) {
+  if (result.loading) {
+    return <p>loding...</p>
+  } else if (result.error){
+    if (result.error?.networkError) return <p>ネットワークエラー</p>
+    return <p>サーバーエラー</p>
+  }
+
+  return (
+    <Mutation mutation={UPDATE_POST} queryResultData={result.data}>
+      { PipeEditor }
+    </Mutation>
+  )
+}
+
+export const PipeEditor = (mutation: MutationFunction, result: MutationResult, data: any) => {
   const history = useHistory()
-  const [updatePost, { data }] = useMutation(UPDATE_POST)
+  console.log(data)
+  console.log(data.getPostById.id)
+  const handleSubmit = async({ value, title }: any) => {
+    console.log(value, title)
+    try {
+      await mutation({
+        variables: {
+          title: title,
+          content: value,
+          postId: data.getPostById.id
+        }
+      })
+      history.push("/admin")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  return Editor(handleSubmit, data)
+}
+
+export const Editor = (handleSubmit: Function, data: any) => {
+  const [title, setTitle] = useState(data.getPostById.title)
+  const [value, setValue] = useState(data.getPostById.content)
 
   const handle = (e: any) => {
     setValue(e)
@@ -42,27 +78,11 @@ export default function AdminArticleEditor(props: any) {
     setTitle(e.target.value)
   }
 
-  const handleSubmit = () => {
-    console.log(value, title)
-    try {
-      updatePost({
-        variables: {
-          title: title,
-          content: value,
-          postId: props.gqlres.getPostById.id
-        }
-      })
-      history.push("/admin")
-    } catch (error) {
-      console.log(error)
-    }
-  }
-
   return (
     <form>
       <ToolBar mb={3}>
         <CtmTextField id="filled-basic" label="タイトル" variant="filled" defaultValue={title} onChange={e => handleChange(e)} />
-        <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit() }}>更新</CtmButton>
+        <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit({ title, value }) }}>更新</CtmButton>
       </ToolBar>
       <MDEditor
         height={800}

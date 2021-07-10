@@ -6,7 +6,7 @@ import {
   Button,
 } from '@material-ui/core'
 import MDEditor from '@uiw/react-md-editor';
-import { CREATE_POST, GET_ALL_POSTS } from '../graphql/query'
+import { CREATE_POST, GET_ALL_POSTS } from '../graphql/request'
 import { useMutation } from '@apollo/client';
 import { Link } from 'react-router-dom'
 

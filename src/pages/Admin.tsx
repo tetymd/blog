@@ -3,27 +3,22 @@ import {
   Box,
 } from '@material-ui/core'
 import AdminHeader from '../components/AdminHeader'
-import { GET_ALL_POSTS } from '../graphql/query'
-import { useQuery } from '@apollo/client';
+import { GET_ALL_POSTS } from '../graphql/request'
 import AdminArticleList from '../components/AdminArticleList'
-import { Auth } from 'aws-amplify'
+import { Query } from '../graphql/Query';
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
 })
 
 export default function Admin() {
-  const { loading, data } = useQuery(GET_ALL_POSTS)
-
   return (
     <Box>
       <AdminHeader/>
       <CtmBox pt={10} pb={3}>
-        { loading ? (
-          <p>Loading...</p>
-        ): (
-          <AdminArticleList gqlres={data} />
-        )}
+        <Query query={GET_ALL_POSTS} errorPolicy="all" notifyOnNetworkStatusChange={true} >
+          { AdminArticleList }
+        </Query>
       </CtmBox>
     </Box>
   )
