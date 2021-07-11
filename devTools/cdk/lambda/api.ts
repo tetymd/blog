@@ -17,10 +17,15 @@ exports.handler = async function(event) {
     }
   }
 
-  const allPosts = async () => {
+  const allPosts = async (args: any) => {
     try {
       console.log("exec query allPosts")
-      return await prisma.post.findMany()
+      return await prisma.post.findMany({
+        take: args.take,
+        cursor: {
+          id: args.cursor
+        }
+      })
     } catch (err) {
       console.log("Error:", err)
       return null
@@ -105,7 +110,7 @@ exports.handler = async function(event) {
     case 'allUsers':
       return await allUsers()
     case 'allPosts':
-      return await allPosts()
+      return await allPosts(event.arguments)
     case 'getUserById':
       return await getUserById(event.arguments)
     case 'getPostById':

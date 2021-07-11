@@ -1,16 +1,33 @@
-import { QueryResult } from '@apollo/client'
+import { ApolloCache, InMemoryCache, QueryResult } from '@apollo/client'
+import { concatPagination } from '@apollo/client/utilities'
 import {
   styled,
   Grid,
   Box,
+  Button,
 } from '@material-ui/core'
+import { FC, useEffect, useRef, useState } from 'react'
+import { GET_ALL_POSTS } from '../graphql/request'
 import AdminCard from './AdminCard'
+import InfiniteScroll from 'react-infinite-scroller';
+
 
 const GridItem = styled(Grid)({
   width: '100%'
 })
 
-function AdminArticleList(result: QueryResult) {
+const getMore = async(fetchMore: any, cursor: any) => {
+  const r = await fetchMore({
+    variables: {
+      take: 10,
+      cursor: cursor.current
+    },
+  });
+  console.log(r)
+}
+
+export default function AdminArticleList(result: QueryResult) {
+  const cursor = useRef(1)
   if (result.loading) {
     return <p>loding...</p>
   } else if (result.error){
@@ -30,11 +47,16 @@ function AdminArticleList(result: QueryResult) {
     )
   }
 
+  const handleSubmit = () => {
+    cursor.current = +result.data.allPosts.slice(-1)[0].id+1
+    console.log(cursor.current, result.data)
+    getMore(result.fetchMore, cursor)
+  }
+
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       {items}
+      <Button onClick={ () => { handleSubmit() }}>もっと読む</Button>
     </Grid>
   )
 }
-
-export default AdminArticleList

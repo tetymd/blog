@@ -1,8 +1,11 @@
 import { gql } from '@apollo/client'
 
 export const GET_ALL_POSTS = gql`
-  query {
-    allPosts{
+  query allPosts(
+    $take: Int
+    $cursor: Int
+  ) {
+    allPosts(take: $take cursor: $cursor) {
       id
       title
       createdAt

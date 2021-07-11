@@ -1,16 +1,29 @@
-import { QueryResult } from '@apollo/client'
+import { ApolloCache, QueryResult } from '@apollo/client'
 import {
   styled,
   Grid,
   Box,
+  Button,
 } from '@material-ui/core'
+import { useRef, useState } from 'react'
 import MediaCard from './Card'
 
 const GridItem = styled(Grid)({
   width: '100%'
 })
 
+const getMore = async(fetchMore: any, cursor: any) => {
+  const r = await fetchMore({
+    variables: {
+      take: 10,
+      cursor: cursor.current
+    },
+  });
+  console.log(r)
+}
+
 export default function ArticleList(result: QueryResult) {
+  const cursor = useRef(1)
   if (result.loading) {
     return <p>loding...</p>
   } else if (result.error){
@@ -30,10 +43,17 @@ export default function ArticleList(result: QueryResult) {
     )
   }
 
+  const handleSubmit = () => {
+    cursor.current = +result.data.allPosts.slice(-1)[0].id+1
+    console.log(cursor.current, result.data)
+    getMore(result.fetchMore, cursor)
+  }
+
   return (
     <Box>
       <Grid container direction="column" alignItems="center" justify="center">
         {items}
+        <Button onClick={ () => { handleSubmit() }}>もっと読む</Button>
       </Grid>
     </Box>
   )
