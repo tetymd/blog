@@ -11,7 +11,9 @@ import {
   InMemoryCache,
   ApolloProvider,
   ApolloLink,
+  InMemoryCacheConfig,
 } from '@apollo/client';
+import { relayStylePagination } from '@apollo/client/utilities'
 
 Amplify.configure({
   // (required) only for Federated Authentication - Amazon Cognito Identity Pool ID
@@ -36,11 +38,31 @@ const link = ApolloLink.from([
   createSubscriptionHandshakeLink({ url, region, auth })
 ]);
 
+const cacheConfig: InMemoryCacheConfig = {
+  typePolicies: {
+    Query: {
+      fields: {
+        allPosts: {
+          read(existing) {
+            console.log("existing:", existing)
+            return existing
+          },
+          merge(existing = [], incoming: any|undefined[]) {
+            console.log("existing:", existing)
+            console.log("incoming:", incoming)
+            return incoming ? [ ...existing, ...incoming ] : [ ...existing ]
+          }
+        }
+      }
+    }
+  }
+}
+
 const client = new ApolloClient({
   link: link,
   // uri: 'http://localhost:4000',
-  cache: new InMemoryCache()
-});
+  cache: new InMemoryCache(cacheConfig)
+})
 
 const CustomBox = styled(Box)({
   backgroundColor: 'rgb(240,240,240)',

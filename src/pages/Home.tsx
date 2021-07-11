@@ -17,7 +17,7 @@ export default function Home() {
     <Box>
       <AppHeader/>
       <CtmBox pt={10} pb={3}>
-        <Query query={GET_ALL_POSTS} errorPolicy="all" notifyOnNetworkStatusChange={true} >
+        <Query query={GET_ALL_POSTS} variables={{ take: 10, cursor: 1 }} errorPolicy="all" notifyOnNetworkStatusChange={true} >
           { ArticleList }
         </Query>
       </CtmBox>
