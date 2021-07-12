@@ -62,7 +62,6 @@ export default function AdminCreateArticle() {
         <Mutation mutation={CREATE_POST} update={updateMutation}>
           { PipeEditor }
         </Mutation>
-        <AdminArticleEditorCreate />
       </CtmBox>
     </Box>
   )
