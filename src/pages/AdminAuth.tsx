@@ -28,31 +28,22 @@ const CtmTypography = styled(Typography)({
   textAlign: "center",
 })
 
+const options = {
+  customProvider: 'Facebook',
+  customState: ""
+}
+
+const facebookLogin = async(dispatch: any) => {
+  try {
+    await Auth.federatedSignIn(options)
+    dispatch({ type: 'signin'})
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export default function AdminAuth() {
-  const [username, setUsername] = useState("")
-  const [password, setPassword] = useState("")
   const { state, dispatch } = useContext(AuthContext)
-  const history = useHistory()
-
-  const handleChangeUserName = (e: any) => {
-    setUsername(e.target.value)
-  }
-
-  const handleChangePassword = (e: any) => {
-    setPassword(e.target.value)
-  }
-
-  const signIn = async () => {
-    try {
-      const user = await Auth.signIn(username, password)
-      console.log(user, state)
-      dispatch({ type: 'signin' })
-      console.log(state)
-      history.push("/admin")
-    } catch (error) {
-      console.log("error:", error)
-    }
-  }
 
   return (
     <Box>
@@ -60,20 +51,7 @@ export default function AdminAuth() {
       <CtmBox pt={10} pb={3}>
         <CtmCard>
           <CardContent>
-            <Grid container direction="column" justify="center" alignItems="center" spacing={2} >
-              <Grid item >
-                <CtmTypography variant="h4">サインイン</CtmTypography>
-              </Grid>
-              <Grid item >
-                <TextField label="ユーザー名" variant="filled" fullWidth onChange={e => handleChangeUserName(e)} />
-              </Grid>
-              <Grid item >
-                <TextField label="パスワード" variant="filled" fullWidth type="password" autoComplete="current-password" onChange={e => handleChangePassword(e)} />
-              </Grid>
-              <Grid item >
-                <Button variant="contained" color="primary" onClick={() => { signIn() }}>サインイン</Button>
-              </Grid>
-            </Grid>
+            <Button variant="contained" color="primary" onClick={() => { facebookLogin(dispatch) }}>サインイン</Button>
           </CardContent>
         </CtmCard>
       </CtmBox>

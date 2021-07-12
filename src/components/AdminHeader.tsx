@@ -15,11 +15,8 @@ const CtmTypography = styled(Typography)({
 })
 
 export default function AdminHeader() {
-  const history = useHistory()
-
   const handleClick = () => {
     Auth.signOut()
-    history.push("/")
   }
 
   return (

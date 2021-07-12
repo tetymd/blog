@@ -190,6 +190,16 @@ export class CdkStack extends cdk.Stack {
         resources: [dbSecret.secretFullArn || ''],
       })
     )
+    
+    if (!process.env.FACEBOOK_ID) throw Error
+    const preSignUpLambda = new lmdnode.NodejsFunction(this, 'preSignUpLambda', {
+      runtime: lmd.Runtime.NODEJS_12_X,
+      memorySize: 1024,
+      entry: 'lambda/checkSignUpUser.ts',
+      environment: {
+        FACEBOOK_ID: process.env.FACEBOOK_ID
+      }
+    })
 
     ////////////////////////////////
     /// AppSync
@@ -248,6 +258,9 @@ export class CdkStack extends cdk.Stack {
     ////////////////////////////////
     const userPool = new cognito.UserPool(this, 'UserPool', {
       userPoolName: 'blog',
+      lambdaTriggers: {
+        preSignUp: preSignUpLambda
+      }
     })
 
     const readOnlyScope = new cognito.ResourceServerScope({

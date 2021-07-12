@@ -9,8 +9,6 @@ import {
 import { FC, useEffect, useRef, useState } from 'react'
 import { GET_ALL_POSTS } from '../graphql/request'
 import AdminCard from './AdminCard'
-import InfiniteScroll from 'react-infinite-scroller';
-
 
 const GridItem = styled(Grid)({
   width: '100%'
