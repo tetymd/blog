@@ -16,27 +16,6 @@ import { Auth } from 'aws-amplify'
 import { AuthContext } from './App'
 
 export default function Routing() {
-  console.log("hello")
-  const { state, dispatch } = useContext(AuthContext)
-  useEffect(() => {
-    if (state.isSignIn === false) {
-      const _ = (async() => {
-        try {
-          const session = await Auth.currentSession()
-          console.log(session)
-          dispatch({
-            type: 'signin'
-          })
-        } catch (error) {
-          console.log("error:", error)
-          dispatch({
-            type: 'signout'
-          })
-        }
-      })()
-    }
-  }, [state.isSignIn])
-
   return (
     <Router>
       <Switch>
