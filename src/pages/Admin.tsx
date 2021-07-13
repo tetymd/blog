@@ -16,7 +16,7 @@ export default function Admin() {
     <Box>
       <AdminHeader/>
       <CtmBox pt={10} pb={3}>
-        <Query query={GET_ALL_POSTS} variables={{ take: 10, cursor: 1 }} errorPolicy="all" notifyOnNetworkStatusChange={true} >
+        <Query query={GET_ALL_POSTS} variables={{ take: -10, cursor: 0 }} errorPolicy="all" notifyOnNetworkStatusChange={true} >
           { AdminArticleList }
         </Query>
       </CtmBox>

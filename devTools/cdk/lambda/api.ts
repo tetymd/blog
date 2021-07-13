@@ -19,13 +19,26 @@ exports.handler = async function(event) {
 
   const allPosts = async (args: any) => {
     try {
+      if (args.cursor === 0) {
+        const c = await prisma.post.findMany({
+          take: -1
+        })
+        args.cursor = c[0].id-9
+        console.log(args)
+      }
       console.log("exec query allPosts")
-      return await prisma.post.findMany({
+      console.log(args)
+      const r = await prisma.post.findMany({
         take: args.take,
         cursor: {
           id: args.cursor
+        },
+        orderBy: {
+          id: "desc"
         }
       })
+      console.log(r)
+      return r
     } catch (err) {
       console.log("Error:", err)
       return null
