@@ -15,7 +15,7 @@ const GridItem = styled(Grid)({
 const getMore = async(fetchMore: any, cursor: any) => {
   const r = await fetchMore({
     variables: {
-      take: 10,
+      take: -10,
       cursor: cursor.current
     },
   });
@@ -44,8 +44,9 @@ export default function ArticleList(result: QueryResult) {
   }
 
   const handleSubmit = () => {
-    cursor.current = +result.data.allPosts.slice(-1)[0].id+1
-    console.log(cursor.current, result.data)
+    cursor.current = +result.data.allPosts.slice(-1)[0].id-10
+    if (cursor.current < 1) cursor.current = 1
+    console.log("cursor:", cursor.current)
     getMore(result.fetchMore, cursor)
   }
 

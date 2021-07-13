@@ -19,8 +19,8 @@ type Post {
 type Query {
   allUsers: [User!]!
   allPosts(
-    take: Int
-    cursor: Int
+    take: Int = -10
+    cursor: Int = 0
   ): [Post!]
   getUserById(id: ID): User!
   getPostById(id: ID): Post!

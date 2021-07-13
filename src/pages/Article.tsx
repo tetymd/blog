@@ -9,6 +9,7 @@ import ArticleCard from '../components/ArticleCard'
 import { useQuery } from '@apollo/client'
 import { GET_POST } from '../graphql/request'
 import { useParams } from 'react-router-dom'
+import { Query } from '../graphql/Query'
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -21,12 +22,6 @@ const GridItem = styled(Grid)({
 export default function ArticlePage() {
   const params: any = useParams()
   console.log(params.id)
-  const { loading, data } = useQuery(GET_POST, {
-    variables: { id: params.id },
-  })
-
-  console.log(loading)
-  console.log(data)
 
   return (
     <Box>
@@ -34,11 +29,9 @@ export default function ArticlePage() {
       <CtmBox pt={10} pb={3}>
         <Grid container direction="column" alignItems="center" justify="center">
           <GridItem item xs={11} sm={9} md={7} lg={7} xl={5}>
-            { loading ? (
-              <p>Loading...</p>
-            ): (
-              <ArticleCard gqlres={data} />
-            )}
+            <Query query={GET_POST} variables={{ id: params.id }} errorPolicy="all" notifyOnNetworkStatusChange={true} >
+                { ArticleCard }
+            </Query>
           </GridItem>
         </Grid>
       </CtmBox>

@@ -1,5 +1,7 @@
 import { PrismaClient } from '../cdk/node_modules/@prisma/client'
 import { ApolloServer } from 'apollo-server'
+import Prisma from '@prisma/client'
+import { cursorTo } from 'readline'
 const { readFileSync } = require('fs')
 
 const prisma = new PrismaClient()
@@ -13,8 +15,17 @@ async function main() {
           include: { posts: true },
         })
       },
-      allPosts: () => {
-        return prisma.post.findMany()
+      allPosts: (_: any, args: {take: number, cursor: number}) => {
+        console.log(args)
+        return prisma.post.findMany({
+          take: args.take,
+          cursor: {
+            id: args.cursor
+          },
+          orderBy: [{
+            id: 'desc'
+          }]
+        })
       },
       getUserById: (_: any, args: { id: number }) => {
         const id = +args.id

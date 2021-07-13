@@ -11,7 +11,7 @@ import { CREATE_POST, GET_ALL_POSTS } from '../graphql/request';
 import { DataProxy, FetchResult, MutationFunction, MutationResult } from '@apollo/client';
 import { useState } from 'react';
 import MDEditor from '@uiw/react-md-editor';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 const CtmBox = styled(Box)({
   minHeight: "100vh"
@@ -38,16 +38,26 @@ const updateMutation = (cache:DataProxy, {data}: FetchResult) => {
   const newPostFromResponse = data?.createPost;
   var existingPosts: any = cache.readQuery({
     query: GET_ALL_POSTS,
+    variables: {
+      take: -10,
+      cursor: 0
+    },
   });
+  console.log("data", data)
+  console.log("existing", existingPosts)
 
   if (existingPosts && newPostFromResponse) {
     console.log("update")
     cache.writeQuery({
       query: GET_ALL_POSTS,
+      variables: {
+        take: -10,
+        cursor: 0
+      },
       data: {
         allPosts: [
-          ...existingPosts?.allPosts,
           newPostFromResponse,
+          ...existingPosts?.allPosts,
         ],
       },
     });
@@ -55,11 +65,15 @@ const updateMutation = (cache:DataProxy, {data}: FetchResult) => {
 }
 
 export default function AdminCreateArticle() {
+  const history = useHistory()
+  const onComplete = () => {
+    history.push("/admin")
+  }
   return (
     <Box>
       <AdminHeader/>
       <CtmBox pt={12} pb={12} pl={12} pr={12}>
-        <Mutation mutation={CREATE_POST} update={updateMutation}>
+        <Mutation mutation={CREATE_POST} update={updateMutation} onCompleted={onComplete}>
           { PipeEditor }
         </Mutation>
       </CtmBox>
@@ -68,9 +82,9 @@ export default function AdminCreateArticle() {
 }
 
 export const PipeEditor = (mutation: MutationFunction, result: MutationResult) => {
-  const handleSubmit = ({ value, title }: any) => {
+  const handleSubmit = async({ value, title }: any) => {
     console.log(value, title)
-    mutation({
+    await mutation({
       variables: {
         title: title,
         content: value,
@@ -99,9 +113,7 @@ export const Editor = (handleSubmit: Function) => {
     <form>
       <ToolBar mb={3}>
         <CtmTextField id="filled-basic" label="タイトル" variant="filled" defaultValue={title} onChange={e => handleChange(e)} />
-        <Link to="/admin">
-          <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit({ title, value }) }}>投稿</CtmButton>
-        </Link>
+        <CtmButton variant="contained" color="primary" onClick={() => { handleSubmit({ title, value }) }}>投稿</CtmButton>
       </ToolBar>
       <MDEditor
         height={800}
