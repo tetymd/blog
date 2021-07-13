@@ -38,16 +38,24 @@ export default function AdminArticleEditorCreate() {
       const newPostFromResponse = data?.createPost;
       var existingPosts: any = cache.readQuery({
         query: GET_ALL_POSTS,
+        variables: {
+          take: -10,
+          cursor: 0
+        }
       });
 
       if (existingPosts && newPostFromResponse) {
         console.log("update")
         cache.writeQuery({
           query: GET_ALL_POSTS,
+          variables: {
+            take: -10,
+            cursor: 0
+          },
           data: {
             allPosts: [
-              ...existingPosts?.allPosts,
               newPostFromResponse,
+              ...existingPosts?.allPosts,
             ],
           },
         });

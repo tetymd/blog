@@ -6,6 +6,7 @@ import * as rds from '@aws-cdk/aws-rds'
 import * as appsync from '@aws-cdk/aws-appsync'
 import * as lmd from '@aws-cdk/aws-lambda'
 import * as lmdnode from '@aws-cdk/aws-lambda-nodejs'
+import { OAuthScope, UserPoolClientIdentityProvider, UserPoolIdentityProvider } from '@aws-cdk/aws-cognito';
 
 require('dotenv').config()
 
@@ -260,7 +261,18 @@ export class CdkStack extends cdk.Stack {
       userPoolName: 'blog',
       lambdaTriggers: {
         preSignUp: preSignUpLambda
-      }
+      },
+    })
+
+    if (!(process.env.FACEBOOK_CLIENT_ID && process.env.FACEBOOK_SECRET_ID)) throw Error
+    const facebookIdentityProvider = new cognito.UserPoolIdentityProviderFacebook(this, 'facebookIdentityProvider', {
+      clientId: process.env.FACEBOOK_CLIENT_ID,
+      clientSecret: process.env.FACEBOOK_SECRET_ID,
+      userPool: userPool,
+      scopes: [
+        "public_profile",
+        "email"
+      ]
     })
 
     const readOnlyScope = new cognito.ResourceServerScope({
@@ -278,14 +290,39 @@ export class CdkStack extends cdk.Stack {
       scopes: [readOnlyScope, fullAccessScope]
     })
 
+    if (!process.env.COGNITO_DOMAIN_PREFIX) throw Error
+    userPool.addDomain('CognitoDomain', {
+      cognitoDomain: {
+        domainPrefix: process.env.COGNITO_DOMAIN_PREFIX
+      }
+    })
+
     const userPoolClient = new cognito.UserPoolClient(this, "CognitoAppClient", {
       userPool,
+      supportedIdentityProviders: [
+        UserPoolClientIdentityProvider.FACEBOOK
+      ],
       authFlows: {
         userPassword: true,
         userSrp: true,
       },
       generateSecret: false,
       userPoolClientName: 'web',
+      oAuth: {
+        callbackUrls: ["http://localhost:3000/admin"],
+        logoutUrls: ["http://localhsot:3000/signin"],
+        flows: {
+          authorizationCodeGrant: true,
+          implicitCodeGrant: true
+        },
+        scopes: [
+          OAuthScope.EMAIL,
+          OAuthScope.PHONE,
+          OAuthScope.PROFILE,
+          OAuthScope.OPENID,
+          OAuthScope.COGNITO_ADMIN
+        ]
+      }
     })
 
     const identityPool = new cognito.CfnIdentityPool(this, "Identity-pool", {
